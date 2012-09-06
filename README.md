@@ -40,8 +40,7 @@ If that didn't discourage you: Have fun!
 Acknowledgements
 ----------------
 
-Thanks to Lars Vogel for his brilliant
-[Android tutorials][http://www.vogella.com/android.html].
-Thanks also to the countless people answering questions on
-[Stack Overflow][http://stackoverflow.com], or asking just what I wanted to
-know, too).
+Thanks to Lars Vogel for his brilliant Android tutorials 
+(http://www.vogella.com/android.html).
+Thanks also to the countless people answering questions on stackoverflow.com,
+or asking just what I wanted to know.
