@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MoneyBalance</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_delete">Delete</string>
+    <string name="minus">minus</string>
+
+    <string name="new_calculation">New Calculation</string>
+    <string name="calculation_title">Title:</string>
+    <string name="calculation_currency">Currency:</string>
+    <string name="calculation_persons">Persons:</string>
+
+    <string name="no_expenses">No Expenses</string>
+    <string name="date_range_format">%1$s to %2$s</string>
+    <string name="expenses_summary_format">%1$d expenses, %2$s total</string>
+    <string name="plus">New Expense</string>
+    <string name="calculation_summary">Summary</string>
+    <string name="group_by_person">Group by Person</string>
+    <string name="group_by_date">Group by Date</string>
+
+    <string name="new_expense">New Expense</string>
+    <string name="edit_expense">Edit Expense</string>
+    <string name="expense_title">Title:</string>
+    <string name="expense_payer">Payer:</string>
+    <string name="expense_payer_prompt">Who paid?</string>
+    <string name="expense_amount">Amount:</string>
+    <string name="expense_date">Date:</string>
+    <string name="custom_split">Custom Split</string>
+
+    <string name="summary">Summary</string>
+    <string name="first_date">First Date:</string>
+    <string name="last_date">Last Date:</string>
+    <string name="duration">Duration:</string>
+    <string name="num_expenses">Expenses:</string>
+    <string name="total_amount">Total Amount:</string>
+    <string name="expenses_consumption">Expenses/Consumption</string>
+    <string name="day_format">%d day</string>
+    <string name="days_format">%d days</string>
+
+    <string name="validate_required">This field is required.</string>
+    <string name="validate_min_names">Please enter at least %d names.</string>
+    <string name="validate_duplicate_name">This name is not unique.</string>
+    <string name="validate_number">Please enter a positive number.</string>
+    <string name="validate_select_split_persons">Please select at least one person below.</string>
+
+</resources>

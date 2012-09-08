@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Abrechnung</string>
+    <string name="menu_save">Speichern</string>
+    <string name="menu_delete">Löschen</string>
+    <string name="minus">Entfernen</string>
+
+    <string name="new_calculation">Neue Abrechnung</string>
+    <string name="calculation_title">Titel:</string>
+    <string name="calculation_currency">Währung:</string>
+    <string name="calculation_persons">Personen:</string>
+
+    <string name="no_expenses">Keine Ausgaben</string>
+    <string name="date_range_format">%1$s bis %2$s</string>
+    <string name="expenses_summary_format">%1$d Ausgaben, %2$s gesamt</string>
+    <string name="plus">Neuer Posten</string>
+    <string name="calculation_summary">Endergebnis</string>
+    <string name="group_by_person">Nach Person gruppieren</string>
+    <string name="group_by_date">Nach Datum gruppieren</string>
+
+    <string name="new_expense">Neue Ausgabe</string>
+    <string name="edit_expense">Ausgabe Bearbeiten</string>
+    <string name="expense_title">Titel:</string>
+    <string name="expense_payer">Bezahler:</string>
+    <string name="expense_payer_prompt">Wer hat bezahlt?</string>
+    <string name="expense_amount">Betrag:</string>
+    <string name="expense_date">Datum:</string>
+    <string name="custom_split">Ungleiche Aufteilung</string>
+
+    <string name="summary">Zusammenfassung</string>
+    <string name="first_date">Beginn:</string>
+    <string name="last_date">Ende:</string>
+    <string name="duration">Dauer:</string>
+    <string name="num_expenses">Ausgaben:</string>
+    <string name="total_amount">Gesamtbetrag:</string>
+    <string name="expenses_consumption">Ausgaben/Verbrauch</string>
+    <string name="day_format">%d Tag</string>
+    <string name="days_format">%d Tage</string>
+
+    <string name="validate_required">Dieses Feld wird benötigt.</string>
+    <string name="validate_min_names">Bitte gib mindestens %d Namen ein.</string>
+    <string name="validate_duplicate_name">Dieser Name ist bereits vorhanden.</string>
+    <string name="validate_number">Bitte gib eine positive Zahl ein.</string>
+    <string name="validate_select_split_persons">Bitte wähle mindestens eine Person aus.</string>
+
+</resources>

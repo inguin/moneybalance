@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="AppTheme" parent="android:Theme.Holo.Light" />
+    <color name="result_negative">#ff0000</color>
+    <color name="result_positive">#008000</color>
+
+</resources>

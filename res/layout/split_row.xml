@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dip" >
+
+    <CheckBox
+        android:id="@+id/split_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true" />
+
+    <EditText
+        android:id="@+id/split_weight"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical|right"
+        android:inputType="numberDecimal"
+        android:digits="0123456789.,"
+        android:layout_marginLeft="8dip" />
+
+    <TextView
+        android:id="@+id/split_share"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical|right" />
+
+</TableRow>
