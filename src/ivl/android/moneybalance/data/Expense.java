@@ -79,7 +79,7 @@ public class Expense extends DataObject {
 	public List<Double> getShares(List<Person> persons) {
 		List<Double> result = new ArrayList<Double>();
 		if (!isUnevenSplit()) {
-			double share = getAmount() / persons.size();
+			double share = (double) getAmount() / persons.size();
 			for (int i = 0; i < persons.size(); i++)
 				result.add(share);
 		} else {
