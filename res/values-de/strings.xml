@@ -6,6 +6,8 @@
     <string name="menu_delete">Löschen</string>
     <string name="minus">Entfernen</string>
 
+    <string name="confirm_delete_calculation">Bist Du sicher, dass diese Abrechnung gelöscht werden soll?</string>
+
     <string name="new_calculation">Neue Abrechnung</string>
     <string name="calculation_title">Titel:</string>
     <string name="calculation_currency">Währung:</string>

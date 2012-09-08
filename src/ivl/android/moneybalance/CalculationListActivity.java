@@ -25,8 +25,10 @@ import ivl.android.moneybalance.data.Person;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -167,8 +169,8 @@ public class CalculationListActivity extends ListActivity {
 		long calculationId = cursor.getLong(0);
 
 		if (item.getItemId() == ITEM_DELETE) {
-			dataSource.delete(calculationId);
-			refresh();
+			confirmAndDelete(dataSource.get(calculationId));
+			return true;
 		} else if (item.getItemId() == ITEM_SUMMARY) {
 			Intent intent = new Intent(this, SummaryActivity.class);
 			intent.putExtra(ExpenseListActivity.PARAM_CALCULATION_ID, calculationId);
@@ -177,6 +179,22 @@ public class CalculationListActivity extends ListActivity {
 			return false;
 		}
 		return true;
+	}
+
+	private void confirmAndDelete(final Calculation calculation) {
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setIcon(android.R.drawable.ic_delete);
+		dialog.setTitle(calculation.getTitle());
+		dialog.setMessage(R.string.confirm_delete_calculation);
+		dialog.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dataSource.delete(calculation.getId());
+				refresh();
+			}
+		});
+		dialog.setNegativeButton(android.R.string.no, null);
+		dialog.show();
 	}
 
 	@Override

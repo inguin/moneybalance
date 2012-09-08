@@ -6,6 +6,8 @@
     <string name="menu_delete">Delete</string>
     <string name="minus">minus</string>
 
+    <string name="confirm_delete_calculation">Are you sure you want to delete this calculation?</string>
+
     <string name="new_calculation">New Calculation</string>
     <string name="calculation_title">Title:</string>
     <string name="calculation_currency">Currency:</string>
