@@ -35,9 +35,11 @@ import java.util.Map;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -53,7 +55,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -79,7 +80,7 @@ public class ExpenseEditorActivity extends Activity {
 
 	private AutoCompleteTextView titleView;
 	private EditText amountView;
-	private Spinner payerView;
+	private TextView payerView;
 	private TextView dateView;
 
 	private static class CustomSplitEntry {
@@ -93,8 +94,6 @@ public class ExpenseEditorActivity extends Activity {
 	private TableLayout customSplitTable;
 
 	private CurrencyHelper currencyHelper;
-	// XXX: private long currencyDivider;
-	// private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,7 @@ public class ExpenseEditorActivity extends Activity {
 		setContentView(R.layout.expense_editor);
 		titleView = (AutoCompleteTextView) findViewById(R.id.expense_title);
 		amountView = (EditText) findViewById(R.id.expense_amount);
-		payerView = (Spinner) findViewById(R.id.expense_payer);
+		payerView = (TextView) findViewById(R.id.expense_payer);
 		dateView = (TextView) findViewById(R.id.expense_date);
 
 		customSplitCheckBox = (CheckBox) findViewById(R.id.custom_split);
@@ -113,18 +112,17 @@ public class ExpenseEditorActivity extends Activity {
 
 		long expenseId = intent.getLongExtra(PARAM_EXPENSE_ID, -1);
 		long calculationId = -1;
-		long personId = -1;
 
 		mode = (expenseId >= 0 ? Mode.EDIT_EXPENSE : Mode.NEW_EXPENSE);
 		if (mode == Mode.EDIT_EXPENSE) {
 			setTitle(R.string.edit_expense);
 			expense = expenseDataSource.get(expenseId);
 			titleView.setText(expense.getTitle());
-			personId = expense.getPersonId();
 		} else {
 			setTitle(R.string.new_expense);
 			expense = new Expense();
-			personId = intent.getLongExtra(PARAM_PERSON_ID, -1);
+			long personId = intent.getLongExtra(PARAM_PERSON_ID, -1);
+			expense.setPersonId(personId);
 			long millis = intent.getLongExtra(PARAM_DATE, -1);
 			if (millis > 0) {
 				Calendar cal = Calendar.getInstance();
@@ -133,9 +131,8 @@ public class ExpenseEditorActivity extends Activity {
 			}
 		}
 
-		Person person = null;
-		if (personId >= 0) {
-			person = personDataSource.get(personId);
+		if (expense.getPersonId() >= 0) {
+			Person person = personDataSource.get(expense.getPersonId());
 			calculationId = person.getCalculationId();
 		} else {
 			calculationId = intent.getLongExtra(PARAM_CALCULATION_ID, -1);
@@ -160,22 +157,9 @@ public class ExpenseEditorActivity extends Activity {
 
 		persons = calculation.getPersons();
 
-		int selectedPayer = 0;
-		if (person != null) {
-			for (Person p : persons) {
-				if (person.getId() == p.getId()) break;
-				selectedPayer++;
-			}
-		}
-
-		ArrayAdapter<Person> payerAdapter = new ArrayAdapter<Person>(
-				this, android.R.layout.simple_spinner_item, persons);
-		payerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		payerView.setAdapter(payerAdapter);
-		payerView.setSelection(selectedPayer);
-
 		createCustomSplitRows();
 		updateCustomSplit();
+		updatePayer();
 		updateDate();
 
 		customSplitCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -186,6 +170,13 @@ public class ExpenseEditorActivity extends Activity {
 		});
 
 		amountView.addTextChangedListener(updateCustomSplitTextWatcher);
+
+		payerView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pickPayer();
+			}
+		});
 
 		dateView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -285,6 +276,13 @@ public class ExpenseEditorActivity extends Activity {
 		dateView.setText(format.format(expense.getDate().getTime()));
 	}
 
+	private void updatePayer() {
+		payerView.setText(R.string.expense_payer_prompt);
+		for (Person p : persons)
+			if (p.getId() == expense.getPersonId())
+				payerView.setText(p.getName());
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.expense_editor_options, menu);
@@ -337,6 +335,36 @@ public class ExpenseEditorActivity extends Activity {
 		fragment.show(getFragmentManager(), "datePicker");
 	}
 
+	private void pickPayer() {
+		DialogFragment fragment = new DialogFragment() {
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				CharSequence[] personsArray = new CharSequence[persons.size()];
+				int selected = -1;
+				for (int i = 0; i < persons.size(); i++) {
+					Person person = persons.get(i);
+					personsArray[i] = person.getName();
+					if (person.getId() == expense.getPersonId())
+						selected = i;
+				}
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(ExpenseEditorActivity.this);
+				builder.setTitle(R.string.expense_payer_prompt);
+				builder.setSingleChoiceItems(personsArray, selected, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int i) {
+						Person payer = persons.get(i);
+						expense.setPersonId(payer.getId());
+						updatePayer();
+						dismiss();
+					}
+				});
+				return builder.create();
+			}
+		};
+		fragment.show(getFragmentManager(), "personSelector");
+	}
+
 	private String getExpenseTitle() {
 		return titleView.getText().toString().trim();
 	}
@@ -362,6 +390,7 @@ public class ExpenseEditorActivity extends Activity {
 
 		titleView.setError(null);
 		amountView.setError(null);
+		payerView.setError(null);
 		customSplitCheckBox.setError(null);
 		for (int i = 0; i < customSplitEntries.length; i++)
 			customSplitEntries[i].weight.setError(null);
@@ -375,6 +404,11 @@ public class ExpenseEditorActivity extends Activity {
 			getAmount();
 		} catch (Exception e) {
 			amountView.setError(errNumber);
+			valid = false;
+		}
+
+		if (expense.getPersonId() < 0) {
+			payerView.setError(errRequired);
 			valid = false;
 		}
 
@@ -405,11 +439,8 @@ public class ExpenseEditorActivity extends Activity {
 	}
 
 	private void save() throws ParseException {
-		Person payer = (Person) payerView.getSelectedItem();
-
 		expense.setTitle(getExpenseTitle());
 		expense.setAmount(getAmount());
-		expense.setPersonId(payer.getId());
 
 		Map<Long, Double> weights = null;
 		if (customSplitCheckBox.isChecked()) {
