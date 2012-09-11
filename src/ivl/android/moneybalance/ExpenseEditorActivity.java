@@ -356,6 +356,7 @@ public class ExpenseEditorActivity extends Activity {
 						Person payer = persons.get(i);
 						expense.setPersonId(payer.getId());
 						updatePayer();
+						payerView.setError(null);
 						dismiss();
 					}
 				});
