@@ -4,6 +4,7 @@
     <string name="app_name">Abrechnung</string>
     <string name="menu_save">Speichern</string>
     <string name="menu_delete">Löschen</string>
+    <string name="menu_about">Über MoneyBalance</string>
     <string name="minus">Entfernen</string>
 
     <string name="confirm_delete_calculation">Bist Du sicher, dass diese Abrechnung gelöscht werden soll?</string>

@@ -3,4 +3,7 @@
     <item android:id="@+id/new_calculation"
           android:title="@string/new_calculation"
           android:showAsAction="always" android:icon="@android:drawable/ic_menu_add"/>
+    <item android:id="@+id/about"
+          android:title="@string/menu_about"
+          android:icon="@android:drawable/ic_menu_info_details"/>
 </menu>

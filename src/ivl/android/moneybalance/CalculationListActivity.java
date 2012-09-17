@@ -140,15 +140,18 @@ public class CalculationListActivity extends ListActivity {
 	}
 
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    		case R.id.new_calculation:
-    			startActivity(new Intent(this, CalculationEditorActivity.class));
-    			return true;
-    		default:
-    			return super.onOptionsItemSelected(item);
-    	}
-    }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.new_calculation:
+				startActivity(new Intent(this, CalculationEditorActivity.class));
+				return true;
+			case R.id.about:
+				showAboutDialog();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -195,6 +198,11 @@ public class CalculationListActivity extends ListActivity {
 		});
 		dialog.setNegativeButton(android.R.string.no, null);
 		dialog.show();
+	}
+
+	private void showAboutDialog() {
+		AboutDialog about = new AboutDialog(this);
+		about.show();
 	}
 
 	@Override

@@ -4,6 +4,7 @@
     <string name="app_name">MoneyBalance</string>
     <string name="menu_save">Save</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_about">About MoneyBalance</string>
     <string name="minus">minus</string>
 
     <string name="confirm_delete_calculation">Are you sure you want to delete this calculation?</string>
