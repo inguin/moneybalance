@@ -85,7 +85,19 @@ public class CalculationEditorActivity extends Activity {
 		currencyField.setAdapter(adapter);
 		currencyField.setSelection(selectedCurrency);
 
+		if (savedInstanceState != null) {
+			for (String personName : savedInstanceState.getStringArrayList("personNames")) {
+				PersonView view = addPersonRow();
+				view.nameField.setText(personName);
+			}
+		}
 		createOrDeletePersonRows();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putStringArrayList("personNames", getPersonNames());
 	}
 
 	private static String[] getAllCurrencies() {
@@ -126,7 +138,7 @@ public class CalculationEditorActivity extends Activity {
     	}
     }
 
-	private void addPersonRow() {
+	private PersonView addPersonRow() {
 		final View view = getLayoutInflater().inflate(R.layout.person_list_entry, personList, false);
 		personList.addView(view);
 
@@ -136,6 +148,7 @@ public class CalculationEditorActivity extends Activity {
 		personView.deleteButton = (ImageView) view.findViewById(R.id.delete_button);
 		personViews.add(personView);
 
+		personView.nameField.setId(-1); // do not restore in onRestoreInstanceState()
 		personView.nameField.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -164,6 +177,7 @@ public class CalculationEditorActivity extends Activity {
 				createOrDeletePersonRows();
 			}
 		});
+		return personView;
 	}
 
 	private void deletePersonRow(PersonView row) {
@@ -215,8 +229,8 @@ public class CalculationEditorActivity extends Activity {
 		return personView.nameField.getText().toString().trim();
 	}
 
-	private List<String> getPersonNames() {
-		List<String> personNames = new ArrayList<String>();
+	private ArrayList<String> getPersonNames() {
+		ArrayList<String> personNames = new ArrayList<String>();
 		for (int i = 0; i < personViews.size(); i++) {
 			String name = getPersonName(i);
 			if (!name.isEmpty())

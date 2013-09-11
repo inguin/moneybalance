@@ -189,6 +189,7 @@ public class ExpenseEditorActivity extends Activity {
 	private void createCustomSplitRows() {
 		Map<Long, Double> weights = expense.getSplitWeights();
 		customSplitEntries = new CustomSplitEntry[persons.size()];
+		int dynamicId = 0;
 
 		LayoutInflater inflater = getLayoutInflater();
 		for (int i = 0; i < persons.size(); i++) {
@@ -211,6 +212,7 @@ public class ExpenseEditorActivity extends Activity {
 			customSplitEntries[i] = customSplitEntry;
 
 			customSplitEntry.enabled = (CheckBox) row.findViewById(R.id.split_enabled);
+			customSplitEntry.enabled.setId(dynamicId++);
 			customSplitEntry.enabled.setText(person.getName() + ":");
 			customSplitEntry.enabled.setChecked(enabled);
 			customSplitEntry.enabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -222,6 +224,7 @@ public class ExpenseEditorActivity extends Activity {
 			});
 
 			customSplitEntry.weight = (EditText) row.findViewById(R.id.split_weight);
+			customSplitEntry.weight.setId(dynamicId++);
 			customSplitEntry.weight.setEnabled(enabled);
 			customSplitEntry.weight.setText(currencyHelper.format(weight, false));
 			customSplitEntry.weight.addTextChangedListener(updateCustomSplitTextWatcher);
