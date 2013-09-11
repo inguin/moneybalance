@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- LINT REFERENCE - NO TRANSLATION NEEDED  -->
+    <string name="app_name">MoneyBalance</string>
+    <!-- END LINT REFERENCE -->
+    
+    <string name="menu_save">Sauvegarder</string>
+    <string name="menu_delete">Supprimer</string>
+    <string name="menu_about">À propos de MoneyBalance</string>
+    <string name="minus">moins</string>
+
+    <string name="confirm_delete_calculation">Êtes vous sûr de vouloir supprimer ce calcul ?</string>
+
+    <string name="new_calculation">Nouveau calcul</string>
+    <string name="calculation_title">Titre :</string>
+    <string name="calculation_currency">Devise :</string>
+    <string name="calculation_persons">Personnes :</string>
+
+    <string name="no_expenses">Aucune dépense</string>
+    <string name="date_range_format">du %1$s au  %2$s</string>
+    
+    <string name="expenses_summary_format">%1$d dépense(s) pour un total de %2$s</string>
+    <string name="plus">Nouvelle dépense</string>
+    <string name="calculation_summary">Résumé</string>
+    <string name="group_by_person">Grouper par personne</string>
+    <string name="group_by_date">Grouper par date</string>
+
+    <string name="new_expense">Nouvelle dépense</string>
+    <string name="edit_expense">Éditer une dépense</string>
+    <string name="expense_title">Titre :</string>
+    <string name="expense_payer">Payeur :</string>
+    <string name="expense_payer_prompt">Qui a payé ?</string>
+    <string name="expense_amount">Montant :</string>
+    <string name="expense_date">Date :</string>
+    <string name="custom_split">Fractionnement personnalisé</string>
+
+    <string name="summary">Résumé</string>
+    <string name="first_date">Date la plus ancienne :</string>
+    <string name="last_date">Date la plus récente :</string>
+    <string name="duration">Durée :</string>
+    <string name="num_expenses">Dépenses :</string>
+    <string name="total_amount">Montant total :</string>
+    <string name="expenses_consumption">Dépenses / Consommation</string>
+    <string name="day_format">%d jour</string>
+    <string name="days_format">%d jours</string>
+
+    <string name="validate_required">Ce champ est obligatoire.</string>
+    <string name="validate_min_names">Merci de saisir au moins %d noms.</string>
+    <string name="validate_duplicate_name">Ce nom existe déjà.</string>
+    <string name="validate_number">Merci de saisir un nombre positif.</string>
+    <string name="validate_select_split_persons">Merci de choisir au moins une personne ci-dessous.</string>
+
+</resources>
