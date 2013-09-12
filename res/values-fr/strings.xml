@@ -10,12 +10,12 @@
     <string name="menu_about">À propos de MoneyBalance</string>
     <string name="minus">moins</string>
 
-    <string name="confirm_delete_calculation">Êtes vous sûr de vouloir supprimer ce calcul ?</string>
+    <string name="confirm_delete_calculation">Êtes vous sûr de vouloir supprimer ce calcul\u00A0?</string>
 
     <string name="new_calculation">Nouveau calcul</string>
-    <string name="calculation_title">Titre :</string>
-    <string name="calculation_currency">Devise :</string>
-    <string name="calculation_persons">Personnes :</string>
+    <string name="calculation_title">Titre\u00A0:</string>
+    <string name="calculation_currency">Devise\u00A0:</string>
+    <string name="calculation_persons">Personnes\u00A0:</string>
 
     <string name="no_expenses">Aucune dépense</string>
     <string name="date_range_format">du %1$s au  %2$s</string>
@@ -28,19 +28,19 @@
 
     <string name="new_expense">Nouvelle dépense</string>
     <string name="edit_expense">Éditer une dépense</string>
-    <string name="expense_title">Titre :</string>
-    <string name="expense_payer">Payeur :</string>
-    <string name="expense_payer_prompt">Qui a payé ?</string>
-    <string name="expense_amount">Montant :</string>
-    <string name="expense_date">Date :</string>
+    <string name="expense_title">Titre\u00A0:</string>
+    <string name="expense_payer">Payeur\u00A0:</string>
+    <string name="expense_payer_prompt">Qui a payé\u00A0?</string>
+    <string name="expense_amount">Montant\u00A0:</string>
+    <string name="expense_date">Date\u00A0:</string>
     <string name="custom_split">Fractionnement personnalisé</string>
 
     <string name="summary">Résumé</string>
-    <string name="first_date">Date la plus ancienne :</string>
-    <string name="last_date">Date la plus récente :</string>
-    <string name="duration">Durée :</string>
-    <string name="num_expenses">Dépenses :</string>
-    <string name="total_amount">Montant total :</string>
+    <string name="first_date">Date la plus ancienne\u00A0:</string>
+    <string name="last_date">Date la plus récente\u00A0:</string>
+    <string name="duration">Durée\u00A0:</string>
+    <string name="num_expenses">Dépenses\u00A0:</string>
+    <string name="total_amount">Montant total\u00A0:</string>
     <string name="expenses_consumption">Dépenses / Consommation</string>
     <string name="day_format">%d jour</string>
     <string name="days_format">%d jours</string>
