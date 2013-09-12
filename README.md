@@ -1,7 +1,7 @@
 MoneyBalance
 ============
 
-An Android-based calculator for tracking and balancing expenses.
+An Android-based calculator for tracking and balancing group expenses.
 
 Use Case
 --------
