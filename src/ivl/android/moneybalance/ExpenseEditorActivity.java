@@ -34,15 +34,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.view.WindowCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -60,7 +61,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ExpenseEditorActivity extends Activity {
+public class ExpenseEditorActivity extends ActionBarActivity {
 
 	public static final String PARAM_EXPENSE_ID = "expenseId";
 	public static final String PARAM_PERSON_ID = "personId";
@@ -98,6 +99,7 @@ public class ExpenseEditorActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR);
 
 		setContentView(R.layout.expense_editor);
 		titleView = (AutoCompleteTextView) findViewById(R.id.expense_title);
@@ -335,7 +337,7 @@ public class ExpenseEditorActivity extends Activity {
 				return new DatePickerDialog(getActivity(), onDateSet, year, month, day);
 			}
 		};
-		fragment.show(getFragmentManager(), "datePicker");
+		fragment.show(getSupportFragmentManager(), "datePicker");
 	}
 
 	private void pickPayer() {
@@ -366,7 +368,7 @@ public class ExpenseEditorActivity extends Activity {
 				return builder.create();
 			}
 		};
-		fragment.show(getFragmentManager(), "personSelector");
+		fragment.show(getSupportFragmentManager(), "personSelector");
 	}
 
 	private String getExpenseTitle() {
@@ -399,7 +401,7 @@ public class ExpenseEditorActivity extends Activity {
 		for (int i = 0; i < customSplitEntries.length; i++)
 			customSplitEntries[i].weight.setError(null);
 
-		if (getExpenseTitle().isEmpty()) {
+		if (getExpenseTitle().length() == 0) {
 			titleView.setError(errRequired);
 			valid = false;
 		}

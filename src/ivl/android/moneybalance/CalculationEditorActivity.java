@@ -28,10 +28,11 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.view.WindowCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -44,7 +45,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class CalculationEditorActivity extends Activity {
+public class CalculationEditorActivity extends ActionBarActivity {
 
 	private static final int MIN_PERSONS = 2;
 	private static final int MAX_PERSONS = 10;
@@ -63,6 +64,8 @@ public class CalculationEditorActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR);
+
 		setContentView(R.layout.calculation_editor);
 		setTitle(R.string.new_calculation);
 
@@ -105,7 +108,7 @@ public class CalculationEditorActivity extends Activity {
 		Set<String> currencies = new TreeSet<String>();
 		Locale[] locales = Locale.getAvailableLocales();
 		for (Locale locale : locales) {
-			if (locale.getCountry() != null && !locale.getCountry().isEmpty()) {
+			if (locale.getCountry() != null && locale.getCountry().length() > 0) {
 				try {
 					Currency currency = Currency.getInstance(locale);
 					currencies.add(currency.getCurrencyCode());
@@ -191,7 +194,7 @@ public class CalculationEditorActivity extends Activity {
 		while (i < personViews.size() && personViews.size() >= 2) {
 			PersonView personView = personViews.get(i++); 
 			String name = personView.nameField.getText().toString().trim();
-			if (name.isEmpty()) {
+			if (name.length() == 0) {
 				if (!personView.nameField.hasFocus()) {
 					deletePersonRow(personView);
 					i--;
@@ -233,7 +236,7 @@ public class CalculationEditorActivity extends Activity {
 		ArrayList<String> personNames = new ArrayList<String>();
 		for (int i = 0; i < personViews.size(); i++) {
 			String name = getPersonName(i);
-			if (!name.isEmpty())
+			if (name.length() > 0)
 				personNames.add(name);
 		}
 		return personNames;
@@ -247,7 +250,7 @@ public class CalculationEditorActivity extends Activity {
 		for (PersonView personView : personViews)
 			personView.nameField.setError(null);
 
-		if (getCalculationTitle().isEmpty()) {
+		if (getCalculationTitle().length() == 0) {
 			final String errRequired = res.getString(R.string.validate_required);
 			titleField.setError(errRequired);
 			valid = false;
@@ -256,7 +259,7 @@ public class CalculationEditorActivity extends Activity {
 		Set<String> personNames = new HashSet<String>();
 		for (int i = 0; i < personViews.size(); i++) {
 			String name = getPersonName(i);
-			if (!name.isEmpty()) {
+			if (name.length() > 0) {
 				if (personNames.contains(name)) {
 					PersonView personView = personViews.get(i);
 					personView.nameField.setError(res.getString(R.string.validate_duplicate_name));

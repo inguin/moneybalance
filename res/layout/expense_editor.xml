@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/expense_payer"
-            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            style="@style/Widget.AppCompat.Light.Base.Spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="12dp"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/expense_date"
-            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            style="@style/Widget.AppCompat.Light.Base.Spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="12dp" />

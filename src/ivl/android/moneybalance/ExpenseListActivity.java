@@ -32,10 +32,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.WindowCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -46,10 +47,11 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ExpenseListActivity extends ExpandableListActivity {
+public class ExpenseListActivity extends ActionBarActivity implements OnChildClickListener {
 
 	public static final String PARAM_CALCULATION_ID = "calculationId";
 
@@ -60,6 +62,8 @@ public class ExpenseListActivity extends ExpandableListActivity {
 	private final ExpenseDataSource expenseDataSource = new ExpenseDataSource(dbHelper);
 
 	private static final int ITEM_DELETE = 0;
+
+	private ExpenseAdapter adapter;
 
 	private class ExpenseAdapter extends BaseExpandableListAdapter {
 
@@ -314,19 +318,26 @@ public class ExpenseListActivity extends ExpandableListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR);
+
+		setContentView(R.layout.expense_list);
 
 		Intent intent = getIntent();
 		calculationId = intent.getLongExtra(PARAM_CALCULATION_ID, -1);
 
-		setListAdapter(new ExpenseAdapter(this));
-		registerForContextMenu(getExpandableListView());
+		ExpandableListView listView = (ExpandableListView) findViewById(R.id.expense_list);
+		adapter = new ExpenseAdapter(this);
+		listView.setAdapter(adapter);
+		listView.setOnChildClickListener(this);
+		registerForContextMenu(listView);
+		setContentView(listView);
+
 		refresh();
 	}
 
 	private void refresh() {
 		Calculation calculation = calculationDataSource.get(calculationId);
 		setTitle(calculation.getTitle());
-		ExpenseAdapter adapter = (ExpenseAdapter) getExpandableListAdapter();
 		adapter.setCalculation(calculation);
 	}
 
@@ -337,29 +348,28 @@ public class ExpenseListActivity extends ExpandableListActivity {
 	}
 
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    		case R.id.calcluation_summary:
-    			Intent intent = new Intent(this, SummaryActivity.class);
-    			intent.putExtra(SummaryActivity.PARAM_CALCULATION_ID, calculationId);
-    			startActivity(intent);
-    			return true;
-    		case R.id.group_by_person:
-    			((ExpenseAdapter) getExpandableListAdapter()).setGroupByPerson(true);
-    			return true;
-    		case R.id.group_by_date:
-    			((ExpenseAdapter) getExpandableListAdapter()).setGroupByPerson(false);
-    			return true;
-    		case R.id.new_expense:
-    			addExpense();
-    		default:
-    			return super.onOptionsItemSelected(item);
-    	}
-    }
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.calcluation_summary:
+				Intent intent = new Intent(this, SummaryActivity.class);
+				intent.putExtra(SummaryActivity.PARAM_CALCULATION_ID, calculationId);
+				startActivity(intent);
+				return true;
+			case R.id.group_by_person:
+				adapter.setGroupByPerson(true);
+				return true;
+			case R.id.group_by_date:
+				adapter.setGroupByPerson(false);
+				return true;
+			case R.id.new_expense:
+				addExpense();
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-		ExpenseAdapter adapter = (ExpenseAdapter) getExpandableListAdapter();
 		Expense expense = (Expense) adapter.getChild(groupPosition, childPosition);
 		Intent intent = new Intent(this, ExpenseEditorActivity.class);
 		intent.putExtra(ExpenseEditorActivity.PARAM_EXPENSE_ID, expense.getId());
@@ -369,12 +379,11 @@ public class ExpenseListActivity extends ExpandableListActivity {
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		if (v.getId() == android.R.id.list) {
+		if (v.getId() == R.id.expense_list) {
 			ExpandableListContextMenuInfo info = (ExpandableListContextMenuInfo) menuInfo;
 			int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
 			int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
 			if (child != -1) {
-				ExpenseAdapter adapter = (ExpenseAdapter) getExpandableListAdapter();
 				Expense expense = (Expense) adapter.getChild(group, child);
 				menu.setHeaderTitle(expense.getTitle());
 				menu.add(0, ITEM_DELETE, 0, R.string.menu_delete);
@@ -389,7 +398,6 @@ public class ExpenseListActivity extends ExpandableListActivity {
 			int group = ExpandableListView.getPackedPositionGroup(info.packedPosition);
 			int child = ExpandableListView.getPackedPositionChild(info.packedPosition);
 			if (child != -1) {
-				ExpenseAdapter adapter = (ExpenseAdapter) getExpandableListAdapter();
 				Expense expense = (Expense) adapter.getChild(group, child);
 				expenseDataSource.delete(expense.getId());
 				refresh();

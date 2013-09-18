@@ -1,7 +1,15 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light" />
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.Workaround" />
     <color name="result_negative">#ff0000</color>
     <color name="result_positive">#008000</color>
+
+    <!-- Fix invisible text in AutoCompleteTextView in old Android versions (http://code.google.com/p/android/issues/detail?id=5237) -->
+    <style name="Widget.AutoCompleteTextViewLight" parent="@android:style/Widget.AutoCompleteTextView">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+    <style name="Widget.DropDownItemLight" parent="@android:style/Widget.DropDownItem">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
 
 </resources>

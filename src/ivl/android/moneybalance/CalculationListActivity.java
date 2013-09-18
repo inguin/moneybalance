@@ -26,12 +26,14 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.view.WindowCompat;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -40,15 +42,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CalculationListActivity extends ListActivity {
+public class CalculationListActivity extends ActionBarActivity implements OnItemClickListener {
 
 	private final DataBaseHelper dbHelper = new DataBaseHelper(this);
 	private final CalculationDataSource dataSource = new CalculationDataSource(dbHelper);
 	private Cursor cursor;
+
+	private ListView listView;
+	private CalculationAdapter adapter;
 
 	private static final int ITEM_DELETE = 0;
 	private static final int ITEM_SUMMARY = 1;
@@ -111,21 +116,28 @@ public class CalculationListActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR);
 
-		setListAdapter(new CalculationAdapter(this));
-        registerForContextMenu(getListView());
+		setContentView(R.layout.calculation_list);
+
+		listView = (ListView) findViewById(R.id.calculation_list);
+		adapter = new CalculationAdapter(this);
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(this);
+		registerForContextMenu(listView);
+		setContentView(listView);
+
 		refresh();
 	}
 
 	private void refresh() {
-		CalculationAdapter adapter = (CalculationAdapter) getListAdapter();
 		cursor = dataSource.listAll();
-        adapter.changeCursor(cursor);
-        setListAdapter(adapter);
+		adapter.changeCursor(cursor);
+		listView.setAdapter(adapter);
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 		cursor.moveToPosition(position);
 		Calculation calculation = dataSource.fromCursor(cursor);
 		Intent intent = new Intent(this, ExpenseListActivity.class);
@@ -155,7 +167,7 @@ public class CalculationListActivity extends ListActivity {
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		if (v.getId() == android.R.id.list) {
+		if (v.getId() == R.id.calculation_list) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			cursor.moveToPosition(info.position);
 			Calculation calculation = dataSource.fromCursor(cursor);
