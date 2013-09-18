@@ -1,0 +1,7 @@
+Version 1.1 - 18 Sep 2013
+	* Backward compatibility down to API level 7 (Android 2.1)
+	* French localization
+	* Fix handling of orientation changes in certain views.
+
+Version 1.0 - 10 Mar 2013
+	* Initial release

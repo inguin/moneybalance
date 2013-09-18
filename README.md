@@ -19,7 +19,25 @@ Features
 
 * Managing multiple calculations in parallel
 * Uneven split of expenses
-* English and german localization
+* English, german and french localization
+
+Download
+--------
+
+Binary builds are maintained by the F-Droid project and can be downloaded
+from:
+
+https://f-droid.org/repository/browse/?fdid=ivl.android.moneybalance
+
+Dependencies
+------------
+
+The project requires the v7 appcompat library from the Android Support
+Libraries. It is included in the Android Support Library, revision 18,
+at extras/android/support/v7/appcompat. You may have to adjust the library
+reference in the project.properties file to build this project. Follow the
+instructions at http://developer.android.com/tools/support-library/setup.html
+(section "Adding libraries with resources") for details.
 
 Warning
 -------
@@ -28,8 +46,6 @@ This is my first Android project, and I'm pretty sure I'm violating about any
 kind of best practice there is. Don't use it as a reference if your getting
 started with Android yourself. Just to name a few of its shortcomings:
 
-* I'm not yet using the Android support library. The app will probably not
-  work with phones running Android 2.x.
 * I'm not using ContentProviders for database access. Should I? I'm not
   sure.
 * I'm using floating point arithmetic for monetary calculations (the
