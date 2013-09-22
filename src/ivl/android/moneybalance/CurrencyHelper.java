@@ -19,14 +19,18 @@ package ivl.android.moneybalance;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
+import java.util.Locale;
 
 public class CurrencyHelper {
 
-	private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-	private final NumberFormat plainFormat = NumberFormat.getNumberInstance();
+	private final NumberFormat currencyFormat;
+	private final NumberFormat plainFormat;
 	private long divider;
 
-	public CurrencyHelper(Currency currency) {
+	public CurrencyHelper(Currency currency, Locale locale) {
+		currencyFormat = NumberFormat.getCurrencyInstance(locale);
+		plainFormat = NumberFormat.getNumberInstance(locale);
+
 		currencyFormat.setCurrency(currency);
 		currencyFormat.setMinimumFractionDigits(currency.getDefaultFractionDigits());
 		currencyFormat.setMaximumFractionDigits(currency.getDefaultFractionDigits());
@@ -35,6 +39,15 @@ public class CurrencyHelper {
 		plainFormat.setMaximumFractionDigits(currency.getDefaultFractionDigits());
 
 		divider = Math.round(Math.pow(10, currency.getDefaultFractionDigits()));
+	}
+
+	public CurrencyHelper(Currency currency) {
+		this(currency, Locale.getDefault());
+	}
+
+	public void setGroupingUsed(boolean value) {
+		currencyFormat.setGroupingUsed(value);
+		plainFormat.setGroupingUsed(value);
 	}
 
 	public String format(double value, boolean withSymbol) {

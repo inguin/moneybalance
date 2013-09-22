@@ -22,7 +22,6 @@ import ivl.android.moneybalance.dao.ExpenseDataSource;
 import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -354,6 +353,9 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 				Intent intent = new Intent(this, SummaryActivity.class);
 				intent.putExtra(SummaryActivity.PARAM_CALCULATION_ID, calculationId);
 				startActivity(intent);
+				return true;
+			case R.id.export_calculation:
+				CsvExporter.export(calculationDataSource.get(calculationId), this);
 				return true;
 			case R.id.group_by_person:
 				adapter.setGroupByPerson(true);

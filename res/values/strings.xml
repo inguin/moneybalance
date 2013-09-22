@@ -19,6 +19,7 @@
     <string name="expenses_summary_format">%1$d expenses, %2$s total</string>
     <string name="plus">New Expense</string>
     <string name="calculation_summary">Summary</string>
+    <string name="export_calculation">Export</string>
     <string name="group_by_person">Group by Person</string>
     <string name="group_by_date">Group by Date</string>
 
@@ -46,5 +47,11 @@
     <string name="validate_duplicate_name">This name is not unique.</string>
     <string name="validate_number">Please enter a positive number.</string>
     <string name="validate_select_split_persons">Please select at least one person below.</string>
+
+    <string name="export_success">Successfully exported to %s.</string>
+    <string name="export_error_no_permission">No permission to write to external storage.</string>
+    <string name="export_error_mkdir">Failed to create directory %s.</string>
+    <string name="export_error_no_free_file">Failed to find an unused file name.</string>
+    <string name="export_error_write_failed">Error writing to %s:</string>
 
 </resources>

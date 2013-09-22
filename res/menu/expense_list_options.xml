@@ -11,4 +11,6 @@
           android:icon="@android:drawable/ic_menu_add"
           android:title="@string/new_expense"
           moneybalance:showAsAction="always" />
+    <item android:id="@+id/export_calculation"
+          android:title="@string/export_calculation" />
 </menu>

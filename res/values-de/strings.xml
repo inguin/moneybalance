@@ -19,6 +19,7 @@
     <string name="expenses_summary_format">%1$d Ausgaben, %2$s gesamt</string>
     <string name="plus">Neuer Posten</string>
     <string name="calculation_summary">Endergebnis</string>
+    <string name="export_calculation">Exportieren</string>
     <string name="group_by_person">Nach Person gruppieren</string>
     <string name="group_by_date">Nach Datum gruppieren</string>
 
@@ -46,5 +47,11 @@
     <string name="validate_duplicate_name">Dieser Name ist bereits vorhanden.</string>
     <string name="validate_number">Bitte gib eine positive Zahl ein.</string>
     <string name="validate_select_split_persons">Bitte wähle mindestens eine Person aus.</string>
+
+    <string name="export_success">Erfolgreich exportiert nach %s.</string>
+    <string name="export_error_no_permission">Keine Berechtigung zum Zugriff auf den Datenspeicher.</string>
+    <string name="export_error_mkdir">Fehler beim Anlegen des Ordners %s.</string>
+    <string name="export_error_no_free_file">Kein freier Dateiname gefunden.</string>
+    <string name="export_error_write_failed">Fehler beim Schreiben nach %s:</string>
 
 </resources>
