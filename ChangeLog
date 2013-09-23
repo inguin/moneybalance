@@ -1,3 +1,7 @@
+Version 1.2 - 23 Sep 2013
+	* CSV export
+	* Gradle build script
+
 Version 1.1 - 18 Sep 2013
 	* Backward compatibility down to API level 7 (Android 2.1)
 	* French localization
