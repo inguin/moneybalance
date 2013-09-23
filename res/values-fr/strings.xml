@@ -23,6 +23,7 @@
     <string name="expenses_summary_format">%1$d dépense(s) pour un total de %2$s</string>
     <string name="plus">Nouvelle dépense</string>
     <string name="calculation_summary">Résumé</string>
+    <string name="export_calculation">Exporter</string>
     <string name="group_by_person">Grouper par personne</string>
     <string name="group_by_date">Grouper par date</string>
 
@@ -51,4 +52,10 @@
     <string name="validate_number">Merci de saisir un nombre positif.</string>
     <string name="validate_select_split_persons">Merci de choisir au moins une personne ci-dessous.</string>
 
+    <string name="export_success">Export vers %s réalisé avec succès.</string>
+    <string name="export_error_no_permission">Vous n\'avez pas la permission d\'écrire sur un périphérique extérieur.</string>
+    <string name="export_error_mkdir">Impossible de créer le dossier %s.</string>
+    <string name="export_error_no_free_file">Impossible de trouver un nom de fichier inutilisé.</string>
+    <string name="export_error_write_failed">Erreur lors de l\'écriture vers %s\u00A0:</string>
+    
 </resources>
