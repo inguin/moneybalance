@@ -29,7 +29,7 @@ Features
 * Managing multiple calculations in parallel
 * Uneven split of expenses
 * CSV export for importing calculations into a spreadsheet application
-* English, german and french localization
+* English, german, french and spanish localization
 
 Download
 --------
