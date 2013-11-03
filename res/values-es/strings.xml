@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">MoneyBalance</string>
+  <string name="menu_save">Guardar</string>
+  <string name="menu_delete">Borrar</string>
+  <string name="menu_about">Acerca de MoneyBalance</string>
+  <string name="minus">menos</string>
+  
+  <string name="confirm_delete_calculation">¿Seguro que quiere borrar este Cálculo?</string>
+  
+  <string name="new_calculation">Nuevo Cálculo</string>
+  <string name="calculation_title">Título:</string>
+  <string name="calculation_currency">Moneda:</string>
+  <string name="calculation_persons">Personas:</string>
+  
+  <string name="no_expenses">Sin gastos</string>
+  <string name="date_range_format">Desde %1$s hasta %2$s</string>
+  
+  <string name="expenses_summary_format">%1$d gastos, %2$s en total</string>
+  <string name="plus">Nuevo Gasto</string>
+  <string name="calculation_summary">Resumen</string>
+  <string name="export_calculation">Exportar</string>
+  <string name="group_by_person">Agrupar por personas</string>
+  <string name="group_by_date">Agrupar por Fechas</string>
+  
+  <string name="new_expense">Nuevo Gasto</string>
+  <string name="edit_expense">Modificar Gasto</string>
+  <string name="expense_title">Título:</string>
+  <string name="expense_payer">Pagador:</string>
+  <string name="expense_payer_prompt">¿quién pagó?</string>
+  <string name="expense_amount">Importe:</string>
+  <string name="expense_date">Fecha:</string>
+  <string name="custom_split">Reparto personalizado</string>
+  
+  <string name="summary">Resumen</string>
+  <string name="first_date">Desde:</string>
+  <string name="last_date">Hasta:</string>
+  <string name="duration">Duración:</string>
+  <string name="num_expenses">Gastos:</string>
+  <string name="total_amount">Importe total:</string>
+  <string name="expenses_consumption">Gastos/Consumos</string>
+  <string name="day_format">%d día</string>
+  <string name="days_format">%d días</string>
+  
+  <string name="validate_required">Campo necesario.</string>
+  <string name="validate_min_names">Son necesarios al menos %d nombres.</string>
+  <string name="validate_duplicate_name">Este nombre ya existe.</string>
+  <string name="validate_number">El valor debe ser positivo.</string>
+  <string name="validate_select_split_persons">Elija al menos una de las personas.</string>
+  
+  <string name="export_success">Exportación realizada con éxito en %s.</string>
+  <string name="export_error_no_permission">Permiso de escritura denegado en almacenamiento externo.</string>
+  <string name="export_error_mkdir">No se pudo crear la carpeta %s.</string>
+  <string name="export_error_no_free_file">No se pudo encontrar un nombre de archivo no utilizado.</string>
+  <string name="export_error_write_failed">Error al escribir en %s:</string>
+</resources>
