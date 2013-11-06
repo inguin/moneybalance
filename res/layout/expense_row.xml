@@ -29,6 +29,15 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
+        android:id="@+id/expense_exchanged_amount"
+        android:layout_below="@+id/expense_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
         android:id="@+id/expense_details_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

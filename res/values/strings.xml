@@ -29,6 +29,7 @@
     <string name="expense_payer">Payer:</string>
     <string name="expense_payer_prompt">Who paid?</string>
     <string name="expense_amount">Amount:</string>
+    <string name="expense_currency_prompt">Currency</string>
     <string name="expense_date">Date:</string>
     <string name="custom_split">Custom Split</string>
 

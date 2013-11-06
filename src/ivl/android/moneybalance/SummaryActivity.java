@@ -50,7 +50,7 @@ public class SummaryActivity extends Activity {
 		Intent intent = getIntent();
 		long calculationId = intent.getLongExtra(PARAM_CALCULATION_ID, -1);
 		Calculation calculation = calculationDataSource.get(calculationId);
-		currencyHelper = new CurrencyHelper(calculation.getCurrency());
+		currencyHelper = calculation.getMainCurrency().getCurrencyHelper();
 		List<Person> persons = calculation.getPersons();
 		List<Expense> expenses = calculation.getExpenses();
 
@@ -63,14 +63,14 @@ public class SummaryActivity extends Activity {
 			setSummary(calculation);
 		}
 
-		long[] totalExpenses = new long[persons.size()];
+		double[] totalExpenses = new double[persons.size()];
 		double[] totalConsumption = new double[persons.size()];
 
 		for (Expense expense : expenses) {
-			List<Double> shares = expense.getShares(persons);
+			List<Double> shares = expense.getExchangedShares(persons);
 			for (int i = 0; i < persons.size(); i++) {
-				if (persons.get(i).getId() == expense.getPersonId())
-					totalExpenses[i] += expense.getAmount();
+				if (persons.get(i).equals(expense.getPerson()))
+					totalExpenses[i] += expense.getExchangedAmount();
 				totalConsumption[i] += shares.get(i);
 			}
 		}
@@ -91,12 +91,12 @@ public class SummaryActivity extends Activity {
 			TextView resultView = (TextView) row.findViewById(R.id.result);
 
 			nameView.setText(person.getName() + ":");
-			sumExpenses.setText(currencyHelper.formatCents(totalExpenses[i]));
-			sumConsumption.setText(currencyHelper.formatCents((long) totalConsumption[i]));
+			sumExpenses.setText(currencyHelper.format(totalExpenses[i]));
+			sumConsumption.setText(currencyHelper.format(totalConsumption[i]));
 
-			long result = (long) (totalExpenses[i] - totalConsumption[i]);
+			double result = totalExpenses[i] - totalConsumption[i];
 			int color = getResources().getColor(result >= 0 ? R.color.result_positive : R.color.result_negative);
-			resultView.setText(currencyHelper.formatCents(result));
+			resultView.setText(currencyHelper.format(result));
 			resultView.setTextColor(color);
 		}
 	}
@@ -116,13 +116,13 @@ public class SummaryActivity extends Activity {
 		String daysFormat = getResources().getString(duration == 1 ? R.string.day_format : R.string.days_format);
 		durationView.setText(String.format(daysFormat, calculation.getDuration()));
 
-		long totalAmount = 0;
+		double totalAmount = 0;
 		List<Expense> expenses = calculation.getExpenses();
 		for (Expense expense : expenses)
-			totalAmount += expense.getAmount();
+			totalAmount += expense.getExchangedAmount();
 
 		numExpensesView.setText(Integer.toString(expenses.size()));
-		totalAmountView.setText(currencyHelper.formatCents(totalAmount));
+		totalAmountView.setText(currencyHelper.format(totalAmount));
 	}
 
 }

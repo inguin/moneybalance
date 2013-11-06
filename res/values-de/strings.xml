@@ -29,6 +29,7 @@
     <string name="expense_payer">Bezahler:</string>
     <string name="expense_payer_prompt">Wer hat bezahlt?</string>
     <string name="expense_amount">Betrag:</string>
+    <string name="expense_currency_prompt">Währung</string>
     <string name="expense_date">Datum:</string>
     <string name="custom_split">Ungleiche Aufteilung</string>
 

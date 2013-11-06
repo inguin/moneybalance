@@ -23,21 +23,30 @@ import java.util.Map;
 
 public class Expense extends DataObject {
 
-	private long personId;
+	private final Calculation calculation;
+
+	private Person person;
 	private String title = new String();
-	private long amount;
+	private double amount;
+	private Currency currency;
 	private Calendar date = Calendar.getInstance();
 	private Map<Long, Double> splitWeights = null;
 
-	public Expense() {
+	public Expense(Calculation calculation) {
+		this.calculation = calculation;
 		setDate(Calendar.getInstance());
+		setCurrency(calculation.getMainCurrency());
 	}
 
-	public long getPersonId() {
-		return personId;
+	public Calculation getCalculation() {
+		return calculation;
 	}
-	public void setPersonId(long personId) {
-		this.personId = personId;
+
+	public Person getPerson() {
+		return person;
+	}
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
 	public String getTitle() {
@@ -47,11 +56,22 @@ public class Expense extends DataObject {
 		this.title = title;
 	}
 
-	public long getAmount() {
+	public double getAmount() {
 		return amount;
 	}
-	public void setAmount(long amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	public double getExchangedAmount() {
+		return currency.exchangeAmount(amount);
 	}
 
 	public Calendar getDate() {
@@ -94,6 +114,13 @@ public class Expense extends DataObject {
 					share = amount * weight / totalWeight;
 				result.add(share);
 			}
+		}
+		return result;
+	}
+	public List<Double> getExchangedShares(List<Person> persons) {
+		List<Double> result = new ArrayList<Double>();
+		for (Double v : getShares(persons)) {
+			result.add(currency.exchangeAmount(v));
 		}
 		return result;
 	}

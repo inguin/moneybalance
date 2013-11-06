@@ -19,9 +19,11 @@ package ivl.android.moneybalance;
 import ivl.android.moneybalance.dao.CalculationDataSource;
 import ivl.android.moneybalance.dao.DataBaseHelper;
 import ivl.android.moneybalance.dao.ExpenseDataSource;
+import ivl.android.moneybalance.data.Currency;
 import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +60,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 
 	private final DataBaseHelper dbHelper = new DataBaseHelper(this);
 	private final CalculationDataSource calculationDataSource = new CalculationDataSource(dbHelper);
-	private final ExpenseDataSource expenseDataSource = new ExpenseDataSource(dbHelper);
+	private ExpenseDataSource expenseDataSource;
 
 	private static final int ITEM_DELETE = 0;
 
@@ -68,15 +70,14 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 
 		private boolean groupByPerson = true;
 
-		private List<Person> persons;
-		private final Map<Long, Person> personsById = new HashMap<Long, Person>();
-		private final Map<Long, List<Expense>> expensesByPerson = new HashMap<Long, List<Expense>>();
+		private Calculation calculation;
+
+		private final Map<Person, List<Expense>> expensesByPerson = new HashMap<Person, List<Expense>>();
 
 		private final Set<Calendar> dates = new TreeSet<Calendar>();
 		private final Map<Calendar, List<Expense>> expensesByDate = new HashMap<Calendar, List<Expense>>();
 
 		private final LayoutInflater inflater;
-		private CurrencyHelper currencyHelper;
 		private final String groupSummaryFormat = getResources().getString(R.string.expenses_summary_format);
 
 		public ExpenseAdapter(Context context) {
@@ -84,22 +85,18 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 		}
 
 		public void setCalculation(Calculation calculation) {
-			personsById.clear();
+			this.calculation = calculation;
+			expenseDataSource = new ExpenseDataSource(dbHelper, calculation);
+
 			expensesByPerson.clear();
 			dates.clear();
 			expensesByDate.clear();
 
-			currencyHelper = new CurrencyHelper(calculation.getCurrency());
-
-			persons = calculation.getPersons();
-			for (Person person : persons)
-				personsById.put(person.getId(), person);
-
 			for (Person person : calculation.getPersons())
-				expensesByPerson.put(person.getId(), new ArrayList<Expense>());
+				expensesByPerson.put(person, new ArrayList<Expense>());
 
 			for (Expense expense : calculation.getExpenses()) {
-				List<Expense> byPersonList = expensesByPerson.get(expense.getPersonId());
+				List<Expense> byPersonList = expensesByPerson.get(expense.getPerson());
 				byPersonList.add(expense);
 
 				Calendar date = expense.getDate();
@@ -132,8 +129,10 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 
 		@Override
 		public int getGroupCount() {
-			if (groupByPerson)
-				return persons != null ? persons.size() : 0;
+			if (calculation == null)
+				return 0;
+			else if (groupByPerson)
+				return calculation.getPersons().size();
 			else
 				return dates != null ? dates.size() : 0;
 		}
@@ -152,7 +151,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 		@Override
 		public Object getGroup(int groupPosition) {
 			if (groupByPerson) {
-				return persons.get(groupPosition);
+				return calculation.getPersons().get(groupPosition);
 			} else {
 				return dates.toArray()[groupPosition];
 			}
@@ -185,7 +184,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 			if (groupByPerson) {
 				Person person = (Person) getGroup(groupPosition);
 				holder.nameView.setText(person.getName());
-				expenses = expensesByPerson.get(person.getId());
+				expenses = expensesByPerson.get(person);
 			} else {
 				Calendar date = (Calendar) getGroup(groupPosition);
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -194,16 +193,16 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 			}
 
 			int count = 0;
-			long total = 0;
+			double total = 0;
 			for (Expense expense : expenses) {
 				count++;
-				total += expense.getAmount();
+				total += expense.getExchangedAmount();
 			}
 
 			if (count == 0) {
 				holder.summaryView.setText(R.string.no_expenses);
 			} else {
-				String totalStr = currencyHelper.formatCents(total);
+				String totalStr = calculation.getMainCurrency().getCurrencyHelper().format(total);
 				String summary = String.format(groupSummaryFormat, count, totalStr);
 				holder.summaryView.setText(summary);
 			}
@@ -228,7 +227,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 		public int getChildrenCount(int groupPosition) {
 			if (groupByPerson) {
 				Person person = (Person) getGroup(groupPosition);
-				List<Expense> list = expensesByPerson.get(person.getId());
+				List<Expense> list = expensesByPerson.get(person);
 				return list.size();
 			} else {
 				Calendar date = (Calendar) getGroup(groupPosition);
@@ -247,7 +246,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 		public Object getChild(int groupPosition, int childPosition) {
 			if (groupByPerson) {
 				Person person = (Person) getGroup(groupPosition);
-				List<Expense> list = expensesByPerson.get(person.getId());
+				List<Expense> list = expensesByPerson.get(person);
 				return list.get(childPosition);
 			} else {
 				Calendar date = (Calendar) getGroup(groupPosition);
@@ -259,6 +258,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 		private class ChildViewHolder {
 			public TextView titleView;
 			public TextView amountView;
+			public TextView exchangedView;
 			public TextView details1View;
 			public TextView details2View;
 		}
@@ -273,6 +273,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 				holder = new ChildViewHolder();
 				holder.titleView = (TextView) view.findViewById(R.id.expense_title);
 				holder.amountView = (TextView) view.findViewById(R.id.expense_amount);
+				holder.exchangedView = (TextView) view.findViewById(R.id.expense_exchanged_amount);
 				holder.details1View = (TextView) view.findViewById(R.id.expense_details_1);
 				holder.details2View = (TextView) view.findViewById(R.id.expense_details_2);
 				view.setTag(holder);
@@ -281,17 +282,30 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 			}
 
 			Expense expense = (Expense) getChild(groupPosition, childPosition);
+			Currency currency = expense.getCurrency();
+			CurrencyHelper currencyHelper = currency.getCurrencyHelper();
+
 			holder.titleView.setText(expense.getTitle());
-			holder.amountView.setText(currencyHelper.formatCents(expense.getAmount()));
+			holder.amountView.setText(currencyHelper.format(expense.getAmount()));
+			if (expense.getCurrency().equals(calculation.getMainCurrency())) {
+				holder.exchangedView.setVisibility(View.GONE);
+			} else {
+				CurrencyHelper mainCurrencyHelper = calculation.getMainCurrency().getCurrencyHelper();
+				double exchanged = expense.getExchangedAmount();
+				holder.exchangedView.setVisibility(View.VISIBLE);
+				holder.exchangedView.setText(mainCurrencyHelper.format(exchanged));
+			}
+
 			if (groupByPerson) {
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				holder.details1View.setText(format.format(expense.getDate().getTime()));
 			} else {
-				Person person = personsById.get(expense.getPersonId());
-				holder.details1View.setText(person.toString());
+				Person person = expense.getPerson();
+				holder.details1View.setText(person.getName());
 			}
 
 			if (expense.isUnevenSplit()) {
+				List<Person> persons = calculation.getPersons();
 				List<Double> shares = expense.getShares(persons);
 				StringBuilder msg = new StringBuilder();
 				for (int i = 0; i < persons.size(); i++) {
@@ -299,7 +313,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 						Person person = persons.get(i);
 						if (msg.length() > 0)
 							msg.append("; ");
-						String shareStr = currencyHelper.formatCents(Math.round(shares.get(i)));
+						String shareStr = currencyHelper.format(shares.get(i));
 						msg.append(String.format("%s: %s", person.getName(), shareStr));
 					}
 				}
@@ -374,6 +388,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		Expense expense = (Expense) adapter.getChild(groupPosition, childPosition);
 		Intent intent = new Intent(this, ExpenseEditorActivity.class);
+		intent.putExtra(ExpenseEditorActivity.PARAM_CALCULATION_ID, expense.getCalculation().getId());
 		intent.putExtra(ExpenseEditorActivity.PARAM_EXPENSE_ID, expense.getId());
 		startActivity(intent);
 		return true;

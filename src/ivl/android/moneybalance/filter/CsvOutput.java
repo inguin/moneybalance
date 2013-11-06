@@ -12,6 +12,7 @@ import java.util.TreeSet;
 
 import ivl.android.moneybalance.CurrencyHelper;
 import ivl.android.moneybalance.data.Calculation;
+import ivl.android.moneybalance.data.Currency;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
 
@@ -19,10 +20,10 @@ public class CsvOutput {
 
 	private final Calculation calculation;
 	private final List<Person> persons;
+	private final boolean multiCurrency;
 
 	private final CurrencyHelper helper;
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-	private final Map<Long, Person> personsById = new HashMap<Long, Person>();
 
 	private final Set<Calendar> dates = new TreeSet<Calendar>();
 	private final Map<Calendar, List<Expense>> expensesByDate = new HashMap<Calendar, List<Expense>>();
@@ -32,13 +33,11 @@ public class CsvOutput {
 
 	public CsvOutput(Calculation calculation) {
 		this.calculation = calculation;
-
-		helper = new CurrencyHelper(calculation.getCurrency(), Locale.ENGLISH);
-		helper.setGroupingUsed(false);
-
 		persons = calculation.getPersons();
-		for (Person person : persons)
-			personsById.put(person.getId(), person);
+		multiCurrency = (calculation.getCurrencies().size() > 1);
+
+		helper = calculation.getMainCurrency().getCurrencyHelper(Locale.ENGLISH);
+		helper.setGroupingUsed(false);
 
 		for (Expense expense : calculation.getExpenses()) {
 			Calendar date = expense.getDate();
@@ -79,7 +78,9 @@ public class CsvOutput {
 
 	private void appendHeadings() {
 		row++;
-		buffer.append(",,,");
+		buffer.append(",,,,");
+		if (multiCurrency)
+			buffer.append(",,,");
 		for (Person person : persons) {
 			buffer.append(',');
 			buffer.append(quote(person.getName()));
@@ -96,11 +97,35 @@ public class CsvOutput {
 
 		buffer.append(dateFormat.format(date.getTime()));
 		buffer.append(',');
-		buffer.append(quote(personsById.get(expense.getPersonId()).getName()));
+		buffer.append(quote(expense.getPerson().getName()));
 		buffer.append(',');
 		buffer.append(quote(expense.getTitle()));
 		buffer.append(',');
-		buffer.append(helper.formatCents(expense.getAmount(), false));
+
+		Currency currency = expense.getCurrency();
+		if (multiCurrency) {
+			Currency mainCurrency = calculation.getMainCurrency();
+			if (currency.equals(mainCurrency)) {
+				buffer.append(",,,");
+				buffer.append(quote(currency.getCurrencyCode()));
+				buffer.append(',');
+				buffer.append(helper.format(expense.getAmount(), false));
+			} else {
+				buffer.append(quote(currency.getCurrencyCode()));
+				buffer.append(',');
+				buffer.append(helper.format(expense.getAmount(), false));
+				buffer.append(',');
+				buffer.append(currency.getExchangeRateMain() / currency.getExchangeRateThis());
+				buffer.append(',');
+				buffer.append(quote(mainCurrency.getCurrencyCode()));
+				buffer.append(',');
+				buffer.append(String.format("\"=%s*%s\"", cell(row, localAmountColumn()), cell(row, exchangeRateColumn())));
+			}
+		} else {
+			buffer.append(quote(currency.getCurrencyCode()));
+			buffer.append(',');
+			buffer.append(helper.format(expense.getAmount(), false));
+		}
 
 		Map<Long, Double> weights = expense.getSplitWeights();
 
@@ -118,10 +143,10 @@ public class CsvOutput {
 		}
 
 		for (int i = 0; i < persons.size(); i++) {
-			String amountCell = cell(row, 3);
-			String firstWeightCell = cell(row, 4);
-			String weightCell = cell(row, 4 + i);
-			String lastWeightCell = cell(row, 4 + persons.size() - 1);
+			String amountCell = cell(row, exchangedAmountColumn());
+			String firstWeightCell = cell(row, firstWeightColumn());
+			String weightCell = cell(row, firstWeightColumn() + i);
+			String lastWeightCell = cell(row, firstWeightColumn() + persons.size() - 1);
 			String formula = String.format("=%s*%s/SUM(%s:%s)", amountCell, weightCell, firstWeightCell, lastWeightCell);
 			buffer.append(',');
 			buffer.append(formula);
@@ -132,18 +157,20 @@ public class CsvOutput {
 
 	private void appendTotalExpenses() {
 		row++;
-		buffer.append(",,,");
+		buffer.append(",,,,");
+		if (multiCurrency)
+			buffer.append(",,,");
 
 		for (int i = 0; i < persons.size(); i++)
 			buffer.append(',');
 
 		for (int i = 0; i < persons.size(); i++) {
-			int column = 4 + persons.size() + i;
-			String firstNameCell = cell(3, 1);
-			String lastNameCell = cell(3 + calculation.getExpenses().size() - 1, 1);
+			int column = firstShareColumn() + i;
+			String firstNameCell = cell(3, nameColumn());
+			String lastNameCell = cell(3 + calculation.getExpenses().size() - 1, nameColumn());
 			String nameCell = cell(2, column);
-			String firstAmountCell = cell(3, 3);
-			String lastAmountCell = cell(3 + calculation.getExpenses().size() - 1 , 3);
+			String firstAmountCell = cell(3, exchangedAmountColumn());
+			String lastAmountCell = cell(3 + calculation.getExpenses().size() - 1 , exchangedAmountColumn());
 			String formula = String.format("\"=SUMIF(%s:%s, %s, %s:%s)\"", firstNameCell, lastNameCell, nameCell, firstAmountCell, lastAmountCell);
 			buffer.append(',');
 			buffer.append(formula);
@@ -154,13 +181,15 @@ public class CsvOutput {
 
 	private void appendTotalConsumptions() {
 		row++;
-		buffer.append(",,,");
+		buffer.append(",,,,");
+		if (multiCurrency)
+			buffer.append(",,,");
 
 		for (int i = 0; i < persons.size(); i++)
 			buffer.append(',');
 
 		for (int i = 0; i < persons.size(); i++) {
-			int column = 4 + persons.size() + i;
+			int column = firstShareColumn() + i;
 			String firstCell = cell(3, column);
 			String lastCell = cell(3 + calculation.getExpenses().size() - 1, column);
 			String formula = String.format("=SUM(%s:%s)", firstCell, lastCell);
@@ -173,13 +202,15 @@ public class CsvOutput {
 
 	private void appendResults() {
 		row++;
-		buffer.append(",,,");
+		buffer.append(",,,,");
+		if (multiCurrency)
+			buffer.append(",,,");
 
 		for (int i = 0; i < persons.size(); i++)
 			buffer.append(',');
 
 		for (int i = 0; i < persons.size(); i++) {
-			int column = 4 + persons.size() + i;
+			int column = firstShareColumn() + i;
 			String expenseCell = cell(row - 2, column);
 			String consumptionCell = cell(row - 1, column);
 			String formula = String.format("\"=%s-%s\"", expenseCell, consumptionCell);
@@ -199,7 +230,40 @@ public class CsvOutput {
 	}
 
 	private String cell(int row, int column) {
-		return String.format("%c%d", 'A' + column, row);
+		return String.format("%c%d", 'A' + column - 1, row);
+	}
+
+	// Column numbers (n = Number of persons):
+	// Single | Multi | Description
+	//     1  |    1  |  Date
+	//     2  |    2  |  Payer
+	//     3  |    3  |  Title
+	//     -  |    4  |  Local Currency
+	//     -  |    5  |  Amount (local currency)
+	//     -  |    6  |  Exchange Rate
+	//     4  |    7  |  Main Currency
+	//     5  |    8  |  Amount (exchanged)
+	//     6  |    9  |  First split weight
+	//   5+n  |  8+n  |  Last split weight
+	//   6+n  |  9+n  |  First share
+	//  5+2n  | 8+2n  |  Last share
+	private int nameColumn() {
+		return 2;
+	}
+	private int localAmountColumn() {
+		return 5;
+	}
+	private int exchangeRateColumn() {
+		return 6;
+	}
+	private int exchangedAmountColumn() {
+		return multiCurrency ? 8 : 5;
+	}
+	private int firstWeightColumn() {
+		return multiCurrency ? 9 : 6;
+	}
+	private int firstShareColumn() {
+		return firstWeightColumn() + persons.size();
 	}
 
 }

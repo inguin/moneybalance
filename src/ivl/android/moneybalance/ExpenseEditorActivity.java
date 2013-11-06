@@ -19,7 +19,7 @@ package ivl.android.moneybalance;
 import ivl.android.moneybalance.dao.CalculationDataSource;
 import ivl.android.moneybalance.dao.DataBaseHelper;
 import ivl.android.moneybalance.dao.ExpenseDataSource;
-import ivl.android.moneybalance.dao.PersonDataSource;
+import ivl.android.moneybalance.data.Currency;
 import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
@@ -71,16 +71,19 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 	private enum  Mode { NEW_EXPENSE, EDIT_EXPENSE };
 	private Mode mode;
 	private Expense expense;
-	
-	private final DataBaseHelper dbHelper = new DataBaseHelper(this);
-	private final ExpenseDataSource expenseDataSource = new ExpenseDataSource(dbHelper);
-	private final PersonDataSource personDataSource = new PersonDataSource(dbHelper);
-	private final CalculationDataSource calculationDataSource = new CalculationDataSource(dbHelper);
 
+	private final DataBaseHelper dbHelper = new DataBaseHelper(this);
+
+	private final CalculationDataSource calculationDataSource = new CalculationDataSource(dbHelper);
+	private ExpenseDataSource expenseDataSource;
+
+	private Calculation calculation;
+	private List<Currency> currencies;
 	private List<Person> persons;
 
 	private AutoCompleteTextView titleView;
 	private EditText amountView;
+	private TextView currencyView;
 	private TextView payerView;
 	private TextView dateView;
 
@@ -104,6 +107,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		setContentView(R.layout.expense_editor);
 		titleView = (AutoCompleteTextView) findViewById(R.id.expense_title);
 		amountView = (EditText) findViewById(R.id.expense_amount);
+		currencyView = (TextView) findViewById(R.id.expense_currency);
 		payerView = (TextView) findViewById(R.id.expense_payer);
 		dateView = (TextView) findViewById(R.id.expense_date);
 
@@ -112,8 +116,14 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 
 		Intent intent = getIntent();
 
+		long calculationId = intent.getLongExtra(PARAM_CALCULATION_ID, -1);
 		long expenseId = intent.getLongExtra(PARAM_EXPENSE_ID, -1);
-		long calculationId = -1;
+
+		calculation = calculationDataSource.get(calculationId);
+		persons = calculation.getPersons();
+		currencies = calculation.getCurrencies();
+
+		expenseDataSource = new ExpenseDataSource(dbHelper, calculation);
 
 		mode = (expenseId >= 0 ? Mode.EDIT_EXPENSE : Mode.NEW_EXPENSE);
 		if (mode == Mode.EDIT_EXPENSE) {
@@ -122,9 +132,9 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			titleView.setText(expense.getTitle());
 		} else {
 			setTitle(R.string.new_expense);
-			expense = new Expense();
+			expense = new Expense(calculation);
 			long personId = intent.getLongExtra(PARAM_PERSON_ID, -1);
-			expense.setPersonId(personId);
+			expense.setPerson(calculation.getPersonById(personId));
 			long millis = intent.getLongExtra(PARAM_DATE, -1);
 			if (millis > 0) {
 				Calendar cal = Calendar.getInstance();
@@ -133,19 +143,13 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			}
 		}
 
-		if (expense.getPersonId() >= 0) {
-			Person person = personDataSource.get(expense.getPersonId());
-			calculationId = person.getCalculationId();
-		} else {
-			calculationId = intent.getLongExtra(PARAM_CALCULATION_ID, -1);
-		}
-
-		Calculation calculation = calculationDataSource.get(calculationId);
-
-		currencyHelper = new CurrencyHelper(calculation.getCurrency());
+		Currency currency = expense.getCurrency();
+		currencyHelper = currency.getCurrencyHelper();
+		currencyView.setText(currency.getSymbol());
+		currencyView.setEnabled(currencies.size() > 1);
 
 		if (mode == Mode.EDIT_EXPENSE) {
-			String formatted = currencyHelper.formatCents(expense.getAmount(), false);
+			String formatted = currencyHelper.format(expense.getAmount(), false);
 			amountView.setText(formatted);
 		}
 
@@ -156,8 +160,6 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 				android.R.layout.simple_dropdown_item_1line, expenseTitles.toArray(new String[0]));
 		titleView.setAdapter(expenseTitlesAdapter);
 		titleView.setThreshold(1);
-
-		persons = calculation.getPersons();
 
 		createCustomSplitRows();
 		updateCustomSplit();
@@ -172,6 +174,13 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		});
 
 		amountView.addTextChangedListener(updateCustomSplitTextWatcher);
+
+		currencyView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pickCurrency();
+			}
+		});
 
 		payerView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -252,11 +261,11 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 				weightSum += weights[i];
 			}
 
-			long amount = getAmount();
+			double amount = getAmount();
 			for (int i = 0; i < customSplitEntries.length; i++) {
 				if (customSplitEntries[i].enabled.isChecked() && weightSum > 0) {
 					double share = (weights[i] / weightSum * amount);
-					String formatted = currencyHelper.formatCents((long)share);
+					String formatted = currencyHelper.format(share);
 					customSplitEntries[i].result.setText(formatted);
 				}
 			}
@@ -283,9 +292,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 
 	private void updatePayer() {
 		payerView.setText(R.string.expense_payer_prompt);
-		for (Person p : persons)
-			if (p.getId() == expense.getPersonId())
-				payerView.setText(p.getName());
+		payerView.setText(expense.getPerson().getName());
 	}
 
 	@Override
@@ -340,6 +347,38 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		fragment.show(getSupportFragmentManager(), "datePicker");
 	}
 
+	private void pickCurrency() {
+		DialogFragment fragment = new DialogFragment() {
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				CharSequence[] currenciesArray = new CharSequence[currencies.size()];
+				int selected = -1;
+				for (int i = 0; i < currencies.size(); i++) {
+					Currency currency = currencies.get(i);
+					currenciesArray[i] = currency.getSymbol();
+					if (currency.getId() == expense.getCurrency().getId())
+						selected = i;
+				}
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(ExpenseEditorActivity.this);
+				builder.setTitle(R.string.expense_currency_prompt);
+				builder.setSingleChoiceItems(currenciesArray, selected, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Currency currency = currencies.get(which);
+						expense.setCurrency(currency);
+						currencyView.setText(currency.getSymbol());
+						currencyHelper = currency.getCurrencyHelper();
+						updateCustomSplit();
+						dismiss();
+					}
+				});
+				return builder.create();
+			}
+		};
+		fragment.show(getSupportFragmentManager(), "currencySelector");
+	}
+
 	private void pickPayer() {
 		DialogFragment fragment = new DialogFragment() {
 			@Override
@@ -349,7 +388,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 				for (int i = 0; i < persons.size(); i++) {
 					Person person = persons.get(i);
 					personsArray[i] = person.getName();
-					if (person.getId() == expense.getPersonId())
+					if (person.getId() == expense.getPerson().getId())
 						selected = i;
 				}
 
@@ -359,7 +398,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int i) {
 						Person payer = persons.get(i);
-						expense.setPersonId(payer.getId());
+						expense.setPerson(payer);
 						updatePayer();
 						payerView.setError(null);
 						dismiss();
@@ -375,9 +414,9 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		return titleView.getText().toString().trim();
 	}
 
-	private long getAmount() throws ParseException {
+	private double getAmount() throws ParseException {
 		String amountString = amountView.getText().toString();
-		return currencyHelper.parseAsCents(amountString);
+		return currencyHelper.parse(amountString);
 	}
 
 	private double getWeight(int i) throws ParseException {
@@ -413,7 +452,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			valid = false;
 		}
 
-		if (expense.getPersonId() < 0) {
+		if (expense.getPerson() == null) {
 			payerView.setError(errRequired);
 			valid = false;
 		}

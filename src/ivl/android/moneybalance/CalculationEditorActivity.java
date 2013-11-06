@@ -35,6 +35,7 @@ import android.support.v4.view.WindowCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,8 +111,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		for (Locale locale : locales) {
 			if (locale.getCountry() != null && locale.getCountry().length() > 0) {
 				try {
-					Currency currency = Currency.getInstance(locale);
-					currencies.add(currency.getCurrencyCode());
+					currencies.add(Currency.getInstance(locale).getCurrencyCode());
 				} catch (Exception e) {}
 			}
 		}
@@ -120,8 +120,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 
 	private static String getDefaultCurrency() {
 		Locale locale = Locale.getDefault();
-		Currency currency = Currency.getInstance(locale);
-		return currency.getCurrencyCode();
+		return Currency.getInstance(locale).getCurrencyCode();
 	}
 
 	@Override
@@ -222,11 +221,6 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		return titleField.getText().toString().trim();
 	}
 
-	private Currency getCurrency() {
-		String code = (String) currencyField.getSelectedItem();
-		return Currency.getInstance(code);
-	}
-
 	private String getPersonName(int i) {
 		PersonView personView = personViews.get(i);
 		return personView.nameField.getText().toString().trim();
@@ -282,7 +276,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 
 	private void save() {
 		String title = getCalculationTitle();
-		Currency currency = getCurrency();
+		String currency = (String) currencyField.getSelectedItem();
 		List<String> personNames = getPersonNames();
 
 		DataBaseHelper dbHelper = new DataBaseHelper(this);
@@ -301,6 +295,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 			if (validate()) save();
 		} catch (Exception e) {
 			Toast.makeText(this, "Error saving calculation", Toast.LENGTH_LONG).show();
+			Log.e(CalculationEditorActivity.class.toString(), "Error saving calculation", e);
 		}
 	}
 

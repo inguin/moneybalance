@@ -50,6 +50,10 @@ public class CurrencyHelper {
 		plainFormat.setGroupingUsed(value);
 	}
 
+	public double convertCents(long value) {
+		return (double)value / divider;
+	}
+
 	public String format(double value, boolean withSymbol) {
 		NumberFormat format = withSymbol ? currencyFormat : plainFormat;
 		return format.format(value);	
@@ -59,17 +63,9 @@ public class CurrencyHelper {
 		return format(value, true);
 	}
 
-	public String formatCents(long value, boolean withSymbol) {
-		return format((double)value / divider, withSymbol);		
-	}
-
-	public String formatCents(long value) {
-		return formatCents(value, true);		
-	}
-
-	public long parseAsCents(String amountString) throws ParseException {
+	public double parse(String amountString) throws ParseException {
 		Number amount = plainFormat.parse(amountString);
-		return Math.round(amount.floatValue() * divider);
+		return amount.floatValue();
 	}
 
 }

@@ -106,8 +106,8 @@ public class CalculationListActivity extends ActionBarActivity implements OnItem
 				datesView.setVisibility(View.VISIBLE);
 
 				int count = calculation.getExpenses().size();
-				CurrencyHelper helper = new CurrencyHelper(calculation.getCurrency());
-				String total = helper.formatCents(calculation.getExpenseTotal());
+				CurrencyHelper helper = calculation.getMainCurrency().getCurrencyHelper();
+				String total = helper.format(calculation.getExpenseTotal());
 				summaryView.setText(String.format(summaryFormat, count, total));
 			}
 		}

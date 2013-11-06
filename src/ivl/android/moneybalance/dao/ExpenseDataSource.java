@@ -16,36 +16,43 @@
  */
 package ivl.android.moneybalance.dao;
 
+import ivl.android.moneybalance.data.Calculation;
+import ivl.android.moneybalance.data.Currency;
 import ivl.android.moneybalance.data.Expense;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import android.content.ContentValues;
 import android.database.Cursor;
 
 public class ExpenseDataSource extends AbstractDataSource<Expense> {
+
+	private final Calculation calculation;
 
 	private static final String[] COLUMNS = {
 		DataBaseHelper.COLUMN_ID,
 		DataBaseHelper.COLUMN_PERSON_ID,
 		DataBaseHelper.COLUMN_TITLE,
 		DataBaseHelper.COLUMN_AMOUNT,
+		DataBaseHelper.COLUMN_CURRENCY_ID,
 		DataBaseHelper.COLUMN_DATE
 	};
 
-	public ExpenseDataSource(DataBaseHelper dbHelper) {
+	public ExpenseDataSource(DataBaseHelper dbHelper, Calculation calculation) {
 		super(dbHelper, DataBaseHelper.TABLE_EXPENSES, COLUMNS);
+		this.calculation = calculation;
 	}
 
 	@Override
 	protected ContentValues toContentValues(Expense expense) {
+		long fixedAmount = Math.round(expense.getAmount() * expense.getCurrency().getDecimalFactor());
 		ContentValues values = new ContentValues();
-		values.put(DataBaseHelper.COLUMN_PERSON_ID, expense.getPersonId());
+		values.put(DataBaseHelper.COLUMN_PERSON_ID, expense.getPerson().getId());
 		values.put(DataBaseHelper.COLUMN_TITLE, expense.getTitle());
-		values.put(DataBaseHelper.COLUMN_AMOUNT, expense.getAmount());
+		values.put(DataBaseHelper.COLUMN_AMOUNT, fixedAmount);
+		values.put(DataBaseHelper.COLUMN_CURRENCY_ID, expense.getCurrency().getId());
 		values.put(DataBaseHelper.COLUMN_DATE, expense.getDate().getTimeInMillis());
 		return values;
 	}
@@ -53,13 +60,18 @@ public class ExpenseDataSource extends AbstractDataSource<Expense> {
 	@Override
 	public Expense fromCursor(Cursor cursor) {
 		long id = cursor.getLong(0);
-		Expense expense = new Expense();
+		Expense expense = new Expense(calculation);
 		expense.setId(id);
-		expense.setPersonId(cursor.getLong(1));
+		expense.setPerson(calculation.getPersonById(cursor.getLong(1)));
 		expense.setTitle(cursor.getString(2));
-		expense.setAmount(cursor.getLong(3));
+
+		long fixedAmount = cursor.getLong(3);
+		Currency currency = calculation.getCurrencyById(cursor.getLong(4));
+		expense.setCurrency(currency);
+		expense.setAmount((double)fixedAmount / currency.getDecimalFactor());
+
 		Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(cursor.getLong(4));
+		cal.setTimeInMillis(cursor.getLong(5));
 		expense.setDate(cal);
 
 		Map<Long, Double> weights = null;

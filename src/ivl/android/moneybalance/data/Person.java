@@ -18,22 +18,15 @@ package ivl.android.moneybalance.data;
 
 public class Person extends DataObject {
 
-	private long calculationId;
-	private long personId;
+	private final Calculation calculation;
 	private String name = new String();
 
-	public long getCalculationId() {
-		return calculationId;
-	}
-	public void setCalculationId(long calculationId) {
-		this.calculationId = calculationId;
+	public Person(Calculation calculation) {
+		this.calculation = calculation;
 	}
 
-	public long getPersonId() {
-		return personId;
-	}
-	public void setPersonId(long personId) {
-		this.personId = personId;
+	public Calculation getCalculation() {
+		return calculation;
 	}
 
 	public String getName() {

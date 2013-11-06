@@ -17,14 +17,13 @@
 package ivl.android.moneybalance.data;
 
 import java.util.Calendar;
-import java.util.Currency;
 import java.util.List;
-
 
 public class Calculation extends DataObject {
 
 	private String title;
-	private Currency currency;
+	private String mainCurrencyCode;
+	private List<Currency> currencies;
 	private List<Person> persons;
 	private List<Expense> expenses;
 
@@ -37,11 +36,31 @@ public class Calculation extends DataObject {
 		this.title = title;
 	}
 
-	public Currency getCurrency() {
+	public String getMainCurrencyCode() {
+		return mainCurrencyCode;
+	}
+	public void setMainCurrencyCode(String mainCurrency) {
+		this.mainCurrencyCode = mainCurrency;
+	}
+	public Currency getMainCurrency() {
+		Currency currency = currencies.get(0);
+		for (Currency c : currencies)
+			if (c.getCurrencyCode().equals(mainCurrencyCode))
+				currency = c;
 		return currency;
 	}
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
+
+	public List<Currency> getCurrencies() {
+		return currencies;
+	}
+	public void setCurrencies(List<Currency> currencies) {
+		this.currencies = currencies;
+	}
+	public Currency getCurrencyById(long currencyId) {
+		for (Currency currency : currencies)
+			if (currency.getId() == currencyId)
+				return currency;
+		return null;
 	}
 
 	public List<Person> getPersons() {
@@ -49,6 +68,12 @@ public class Calculation extends DataObject {
 	}
 	public void setPersons(List<Person> persons) {
 		this.persons = persons;
+	}
+	public Person getPersonById(long personId) {
+		for (Person person : persons)
+			if (person.getId() == personId)
+				return person;
+		return null;
 	}
 
 	public List<Expense> getExpenses() {
@@ -58,10 +83,12 @@ public class Calculation extends DataObject {
 		this.expenses = expenses;
 	}
 
-	public long getExpenseTotal() {
-		long total = 0;
-		for (Expense expense : expenses)
-			total += expense.getAmount();
+	public double getExpenseTotal() {
+		double total = 0;
+		for (Expense expense : expenses) {
+			Currency currency = expense.getCurrency();
+			total += currency.exchangeAmount(expense.getAmount());
+		}
 		return total;
 	}
 

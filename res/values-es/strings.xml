@@ -29,6 +29,7 @@
   <string name="expense_payer">Pagador:</string>
   <string name="expense_payer_prompt">¿quién pagó?</string>
   <string name="expense_amount">Importe:</string>
+  <string name="expense_currency_prompt">Moneda</string>
   <string name="expense_date">Fecha:</string>
   <string name="custom_split">Reparto personalizado</string>
   
