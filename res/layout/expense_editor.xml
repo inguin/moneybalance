@@ -32,7 +32,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dip"
             android:orientation="horizontal" >
 
             <EditText
@@ -46,7 +45,7 @@
             <TextView
                 android:id="@+id/expense_currency"
                 style="@style/Widget.AppCompat.Light.Base.Spinner"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:paddingLeft="12dp" />
 

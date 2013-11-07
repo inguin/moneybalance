@@ -292,7 +292,8 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 
 	private void updatePayer() {
 		payerView.setText(R.string.expense_payer_prompt);
-		payerView.setText(expense.getPerson().getName());
+		if (expense.getPerson() != null)
+			payerView.setText(expense.getPerson().getName());
 	}
 
 	@Override
@@ -388,7 +389,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 				for (int i = 0; i < persons.size(); i++) {
 					Person person = persons.get(i);
 					personsArray[i] = person.getName();
-					if (person.getId() == expense.getPerson().getId())
+					if (person.equals(expense.getPerson()))
 						selected = i;
 				}
 
