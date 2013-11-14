@@ -125,8 +125,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 			long currencyId = db.insert(TABLE_CURRENCIES, null, values);
 
 			sql = "UPDATE " + TABLE_EXPENSES +
-					" SET " + COLUMN_CURRENCY_ID + " = ?";
-			db.execSQL(sql, new Object[] { currencyId });
+					" SET " + COLUMN_CURRENCY_ID + " = ?" +
+					" WHERE " + COLUMN_PERSON_ID + " IN (SELECT _id FROM persons WHERE calculation_id = ?)";
+			db.execSQL(sql, new Object[] { currencyId, calculationId });
+
+			cursor.moveToNext();
 		}
 	}
 
