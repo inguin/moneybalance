@@ -7,18 +7,15 @@ import java.util.Locale;
 public class Currency extends DataObject {
 
 	private final long calculationId;
-	private final String currencyCode;
-	private final long decimalFactor;
+	private String currencyCode;
+	private long decimalFactor;
 	private double rateThis;
 	private double rateMain;
 
-	public Currency(long calculationId, String currencyCode) {
+	public Currency(long calculationId) {
 		this.calculationId = calculationId;
-		this.currencyCode = currencyCode;
 		setExchangeRate(1.0, 1.0);
-
-		java.util.Currency jc = java.util.Currency.getInstance(currencyCode);
-		decimalFactor = Math.round(Math.pow(10, jc.getDefaultFractionDigits()));
+		decimalFactor = 1;
 	}
 
 	public long getCalculationId() {
@@ -27,6 +24,11 @@ public class Currency extends DataObject {
 
 	public String getCurrencyCode() {
 		return currencyCode;
+	}
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+		java.util.Currency jc = java.util.Currency.getInstance(currencyCode);
+		decimalFactor = Math.round(Math.pow(10, jc.getDefaultFractionDigits()));
 	}
 
 	public long getDecimalFactor() {

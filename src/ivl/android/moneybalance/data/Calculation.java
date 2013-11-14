@@ -16,6 +16,7 @@
  */
 package ivl.android.moneybalance.data;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -23,11 +24,16 @@ public class Calculation extends DataObject {
 
 	private String title;
 	private String mainCurrencyCode;
-	private List<Currency> currencies;
-	private List<Person> persons;
-	private List<Expense> expenses;
+	private List<Currency> currencies = new ArrayList<Currency>();
+	private List<Person> persons = new ArrayList<Person>();
+	private List<Expense> expenses = new ArrayList<Expense>();
 
 	private static final long MILLIS_PER_DAY = 24 * 3600 * 1000;
+
+	public Calculation(String title, String mainCurrencyCode) {
+		this.title = title;
+		setMainCurrencyCode(mainCurrencyCode);
+	}
 
 	public String getTitle() {
 		return title;
@@ -39,8 +45,19 @@ public class Calculation extends DataObject {
 	public String getMainCurrencyCode() {
 		return mainCurrencyCode;
 	}
-	public void setMainCurrencyCode(String mainCurrency) {
-		this.mainCurrencyCode = mainCurrency;
+	public void setMainCurrencyCode(String mainCurrencyCode) {
+		Currency currency = null;
+		for (Currency c : currencies)
+			if (c.getCurrencyCode().equals(mainCurrencyCode))
+				currency = c;
+		if (currency != null) {
+			currency.setExchangeRate(1, 1);
+		} else {
+			currency = new Currency(getId());
+			currency.setCurrencyCode(mainCurrencyCode);
+			currencies.add(currency);
+		}
+		this.mainCurrencyCode = mainCurrencyCode;
 	}
 	public Currency getMainCurrency() {
 		Currency currency = currencies.get(0);

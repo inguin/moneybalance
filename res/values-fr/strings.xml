@@ -27,6 +27,8 @@
     <string name="group_by_person">Grouper par personne</string>
     <string name="group_by_date">Grouper par date</string>
 
+    <string name="equals">=</string>
+
     <string name="new_expense">Nouvelle dépense</string>
     <string name="edit_expense">Éditer une dépense</string>
     <string name="expense_title">Titre\u00A0:</string>

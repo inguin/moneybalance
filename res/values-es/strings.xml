@@ -22,7 +22,9 @@
   <string name="export_calculation">Exportar</string>
   <string name="group_by_person">Agrupar por personas</string>
   <string name="group_by_date">Agrupar por Fechas</string>
-  
+
+  <string name="equals">=</string>
+
   <string name="new_expense">Nuevo Gasto</string>
   <string name="edit_expense">Modificar Gasto</string>
   <string name="expense_title">Título:</string>

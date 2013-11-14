@@ -362,23 +362,30 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+
 		switch (item.getItemId()) {
-			case R.id.calcluation_summary:
-				Intent intent = new Intent(this, SummaryActivity.class);
-				intent.putExtra(SummaryActivity.PARAM_CALCULATION_ID, calculationId);
-				startActivity(intent);
-				return true;
-			case R.id.export_calculation:
-				CsvExporter.export(calculationDataSource.get(calculationId), this);
-				return true;
+			case R.id.new_expense:
+				addExpense();
 			case R.id.group_by_person:
 				adapter.setGroupByPerson(true);
 				return true;
 			case R.id.group_by_date:
 				adapter.setGroupByPerson(false);
 				return true;
-			case R.id.new_expense:
-				addExpense();
+			case R.id.manage_currencies:
+				intent = new Intent(this, ManageCurrenciesActivity.class);
+				intent.putExtra(ManageCurrenciesActivity.PARAM_CALCULATION_ID, calculationId);
+				startActivity(intent);
+				return true;
+			case R.id.calcluation_summary:
+				intent = new Intent(this, SummaryActivity.class);
+				intent.putExtra(SummaryActivity.PARAM_CALCULATION_ID, calculationId);
+				startActivity(intent);
+				return true;
+			case R.id.export_calculation:
+				CsvExporter.export(calculationDataSource.get(calculationId), this);
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}

@@ -53,11 +53,11 @@ public class CalculationDataSource extends AbstractDataSource<Calculation> {
 	@Override
 	public Calculation fromCursor(Cursor cursor) {
 		long calculationId = cursor.getLong(0);
+		String title = cursor.getString(1);
+		String mainCurrencyCode = cursor.getString(2);
 
-		Calculation calculation = new Calculation();
+		Calculation calculation = new Calculation(title, mainCurrencyCode);
 		calculation.setId(calculationId);
-		calculation.setTitle(cursor.getString(1));
-		calculation.setMainCurrencyCode(cursor.getString(2));
 
 		CurrencyDataSource currencyDataSource = new CurrencyDataSource(dbHelper);
 		Cursor currenciesCursor = currencyDataSource.listByCalculation(calculationId);
@@ -79,7 +79,7 @@ public class CalculationDataSource extends AbstractDataSource<Calculation> {
 			expenses.addAll(personExpenses);
 		}
 
-		return calculation;		
+		return calculation;
 	}
 
 	@Override
@@ -101,15 +101,43 @@ public class CalculationDataSource extends AbstractDataSource<Calculation> {
 		super.delete(id);
 	}
 
-	public Calculation createCalculation(String title, String mainCurrency, List<String> personNames) {
-		Calculation calculation = new Calculation();
-		calculation.setTitle(title);
-		calculation.setMainCurrencyCode(mainCurrency);
+	@Override
+	public void update(Calculation calculation) {
+		super.update(calculation);
+
+		CurrencyDataSource currencyDataSource = new CurrencyDataSource(dbHelper);
+		Cursor currenciesCursor = currencyDataSource.listByCalculation(calculation.getId());
+		List<Currency> oldCurrencies = currencyDataSource.getAllFromCursor(currenciesCursor);
+
+		for (Currency oldCurrency : oldCurrencies) {
+			Currency newCurrency = null;
+			for (Currency c : calculation.getCurrencies())
+				if (oldCurrency.getCurrencyCode().equals(c.getCurrencyCode()))
+					newCurrency = c;
+			if (newCurrency != null)
+				currencyDataSource.update(newCurrency);
+			else
+				currencyDataSource.delete(oldCurrency.getId());
+		}
+
+		for (Currency newCurrency : calculation.getCurrencies()) {
+			boolean found = false;
+			for (Currency oldCurrency : oldCurrencies)
+				if (oldCurrency.getCurrencyCode().equals(newCurrency.getCurrencyCode()))
+					found = true;
+			if (!found)
+				currencyDataSource.insert(newCurrency);
+		}
+	}
+
+	public Calculation createCalculation(String title, String mainCurrencyCode, List<String> personNames) {
+		Calculation calculation = new Calculation(title, mainCurrencyCode);
 		insert(calculation);
 
 		CurrencyDataSource currencyDataSource = new CurrencyDataSource(dbHelper);
-		Currency ac = new Currency(calculation.getId(), mainCurrency);
-		currencyDataSource.insert(ac);
+		Currency mainCurrency = new Currency(calculation.getId());
+		mainCurrency.setCurrencyCode(mainCurrencyCode);
+		currencyDataSource.insert(mainCurrency);
 
 		PersonDataSource personDataSource = new PersonDataSource(dbHelper, calculation);
 		List<Person> persons = new ArrayList<Person>();

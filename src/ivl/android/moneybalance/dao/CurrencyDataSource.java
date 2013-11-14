@@ -31,9 +31,9 @@ public class CurrencyDataSource extends AbstractDataSource<Currency> {
 	@Override
 	public Currency fromCursor(Cursor cursor) {
 		long calculationId = cursor.getLong(1);
-		String currencyCode = cursor.getString(2);
-		Currency currency = new Currency(calculationId, currencyCode);
+		Currency currency = new Currency(calculationId);
 		currency.setId(cursor.getLong(0));
+		currency.setCurrencyCode(cursor.getString(2));
 		currency.setExchangeRate(cursor.getDouble(3), cursor.getDouble(4));
 		return currency;
 	}

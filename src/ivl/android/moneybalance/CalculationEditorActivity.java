@@ -26,8 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TreeSet;
-
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -39,7 +37,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,20 +71,10 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		currencyField = (Spinner) findViewById(R.id.calculation_currency);
 		personList = (LinearLayout) findViewById(R.id.person_list);
 
-		int selectedCurrency = 0;
-		String defaultCurrency = getDefaultCurrency();
-		String[] currencies = getAllCurrencies();
-		for (String currency : currencies) {
-			if (currency.equals(defaultCurrency))
-				break;
-			selectedCurrency++;
-		}
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, currencies);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		CurrencySpinnerAdapter adapter = new CurrencySpinnerAdapter(this);
+		int selected = adapter.findItem(getDefaultCurrency());
 		currencyField.setAdapter(adapter);
-		currencyField.setSelection(selectedCurrency);
+		currencyField.setSelection(selected);
 
 		if (savedInstanceState != null) {
 			for (String personName : savedInstanceState.getStringArrayList("personNames")) {
@@ -104,23 +91,9 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		outState.putStringArrayList("personNames", getPersonNames());
 	}
 
-	private static String[] getAllCurrencies() {
-		// Currency.getAvailableCurrencies() is not available in Java 1.6
-		Set<String> currencies = new TreeSet<String>();
-		Locale[] locales = Locale.getAvailableLocales();
-		for (Locale locale : locales) {
-			if (locale.getCountry() != null && locale.getCountry().length() > 0) {
-				try {
-					currencies.add(Currency.getInstance(locale).getCurrencyCode());
-				} catch (Exception e) {}
-			}
-		}
-		return currencies.toArray(new String[0]);
-	}
-
-	private static String getDefaultCurrency() {
+	private static Currency getDefaultCurrency() {
 		Locale locale = Locale.getDefault();
-		return Currency.getInstance(locale).getCurrencyCode();
+		return Currency.getInstance(locale);
 	}
 
 	@Override
@@ -276,12 +249,12 @@ public class CalculationEditorActivity extends ActionBarActivity {
 
 	private void save() {
 		String title = getCalculationTitle();
-		String currency = (String) currencyField.getSelectedItem();
+		Currency currency = (Currency) currencyField.getSelectedItem();
 		List<String> personNames = getPersonNames();
 
 		DataBaseHelper dbHelper = new DataBaseHelper(this);
 		CalculationDataSource dataSource = new CalculationDataSource(dbHelper);
-		Calculation calculation = dataSource.createCalculation(title, currency, personNames);
+		Calculation calculation = dataSource.createCalculation(title, currency.getCurrencyCode(), personNames);
 		dbHelper.close();
 
 		Intent intent = new Intent(this, ExpenseListActivity.class);

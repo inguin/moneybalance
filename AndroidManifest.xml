@@ -4,8 +4,8 @@
     android:versionName="1.2" >
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".CalculationEditorActivity" />
+        <activity android:name=".ManageCurrenciesActivity" />
         <activity android:name=".ExpenseListActivity" />
         <activity android:name=".ExpenseEditorActivity" />
         <activity android:name=".SummaryActivity" />

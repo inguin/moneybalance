@@ -11,17 +11,22 @@
 
     <string name="new_calculation">Neue Abrechnung</string>
     <string name="calculation_title">Titel:</string>
-    <string name="calculation_currency">Währung:</string>
+    <string name="calculation_currency">Hauptwährung:</string>
     <string name="calculation_persons">Personen:</string>
 
     <string name="no_expenses">Keine Ausgaben</string>
     <string name="date_range_format">%1$s bis %2$s</string>
     <string name="expenses_summary_format">%1$d Ausgaben, %2$s gesamt</string>
     <string name="plus">Neuer Posten</string>
+    <string name="manage_currencies">Währungen verwalten</string>
     <string name="calculation_summary">Endergebnis</string>
     <string name="export_calculation">Exportieren</string>
     <string name="group_by_person">Nach Person gruppieren</string>
     <string name="group_by_date">Nach Datum gruppieren</string>
+
+    <string name="additional_currencies">Weitere Währungen:</string>
+    <string name="add_currency">Währung hinzufügen</string>
+    <string name="equals">=</string>
 
     <string name="new_expense">Neue Ausgabe</string>
     <string name="edit_expense">Ausgabe Bearbeiten</string>
