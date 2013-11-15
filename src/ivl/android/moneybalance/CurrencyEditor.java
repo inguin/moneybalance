@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class CurrencyEditor {
 
+	private final Context context;
 	private final View view;
 	private final CurrencySpinnerAdapter spinnerAdapter;
 	private final Spinner currencyField;
@@ -31,6 +33,7 @@ public class CurrencyEditor {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		view = inflater.inflate(R.layout.currency_editor, null, false);
 
+		this.context = context;
 		this.mainCurrency = mainCurrency;
 		spinnerAdapter = new CurrencySpinnerAdapter(context);
 		for (Currency c : hiddenCurrencies)
@@ -72,15 +75,25 @@ public class CurrencyEditor {
 	}
 
 	public boolean validate() {
-		// TODO
-		boolean valid = true;
+		final Resources res = context.getResources();
+		final String errNumber = res.getString(R.string.validate_number);
+		final double EPSILON = 0.001;
+
+		boolean thisValid = false;
 		try {
-			getExchangeRateThis();
-			getExchangeRateMain();
-		} catch (ParseException e) {
-			valid = false;
-		}
-		return valid;
+			double rate = getExchangeRateThis();
+			thisValid = (rate > EPSILON);
+		} catch (Exception e) {}
+		thisCurrencyRate.setError(thisValid ? null : errNumber);
+
+		boolean mainValid = false;
+		try {
+			double rate = getExchangeRateMain();
+			mainValid = (rate > EPSILON);
+		} catch (Exception e) {}
+		mainCurrencyRate.setError(mainValid ? null : errNumber);
+
+		return thisValid && mainValid;
 	}
 
 	public Currency getValue(long calculationId) {
