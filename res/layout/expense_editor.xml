@@ -42,12 +42,10 @@
                 android:digits="0123456789.,"
                 android:inputType="numberDecimal" />
 
-            <TextView
+            <Spinner
                 android:id="@+id/expense_currency"
-                style="@style/Widget.AppCompat.Light.Base.Spinner"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingLeft="12dp" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

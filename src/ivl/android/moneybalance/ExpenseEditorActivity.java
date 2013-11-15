@@ -27,6 +27,7 @@ import ivl.android.moneybalance.data.Person;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,12 +51,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -78,12 +82,11 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 	private ExpenseDataSource expenseDataSource;
 
 	private Calculation calculation;
-	private List<Currency> currencies;
 	private List<Person> persons;
 
 	private AutoCompleteTextView titleView;
 	private EditText amountView;
-	private TextView currencyView;
+	private Spinner currencySpinner;
 	private TextView payerView;
 	private TextView dateView;
 
@@ -107,7 +110,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		setContentView(R.layout.expense_editor);
 		titleView = (AutoCompleteTextView) findViewById(R.id.expense_title);
 		amountView = (EditText) findViewById(R.id.expense_amount);
-		currencyView = (TextView) findViewById(R.id.expense_currency);
+		currencySpinner = (Spinner) findViewById(R.id.expense_currency);
 		payerView = (TextView) findViewById(R.id.expense_payer);
 		dateView = (TextView) findViewById(R.id.expense_date);
 
@@ -121,7 +124,6 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 
 		calculation = calculationDataSource.get(calculationId);
 		persons = calculation.getPersons();
-		currencies = calculation.getCurrencies();
 
 		expenseDataSource = new ExpenseDataSource(dbHelper, calculation);
 
@@ -143,10 +145,27 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			}
 		}
 
+		List<java.util.Currency> currencies = new ArrayList<java.util.Currency>();
+		for (Currency currency : calculation.getCurrencies())
+			currencies.add(java.util.Currency.getInstance(currency.getCurrencyCode()));
+		CurrencySpinnerAdapter adapter = new CurrencySpinnerAdapter(this, currencies);
+		adapter.setSymbolOnly(true);
+
 		Currency currency = expense.getCurrency();
 		currencyHelper = currency.getCurrencyHelper();
-		currencyView.setText(currency.getSymbol());
-		currencyView.setEnabled(currencies.size() > 1);
+		currencySpinner.setAdapter(adapter);
+		currencySpinner.setSelection(adapter.findItem(currency.getCurrencyCode()));
+		currencySpinner.setEnabled(currencies.size() > 1);
+
+		currencySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				updateCurrency();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {}
+		});
 
 		if (mode == Mode.EDIT_EXPENSE) {
 			String formatted = currencyHelper.format(expense.getAmount(), false);
@@ -174,13 +193,6 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		});
 
 		amountView.addTextChangedListener(updateCustomSplitTextWatcher);
-
-		currencyView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				pickCurrency();
-			}
-		});
 
 		payerView.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -250,7 +262,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 	private void updateCustomSplit() {
 		try {
 			for (int i = 0; i < customSplitEntries.length; i++)
-				customSplitEntries[i].result.setText("");			
+				customSplitEntries[i].result.setText("");
 
 			double[] weights = new double[customSplitEntries.length];
 			double weightSum = 0;
@@ -284,6 +296,15 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			updateCustomSplit();
 		}
 	};
+
+	private void updateCurrency() {
+		java.util.Currency c = (java.util.Currency) currencySpinner.getSelectedItem();
+		for (Currency currency : calculation.getCurrencies())
+			if (currency.getCurrencyCode().equals(c.getCurrencyCode()))
+				expense.setCurrency(currency);
+		currencyHelper = expense.getCurrency().getCurrencyHelper();
+		updateCustomSplit();
+	}
 
 	private void updateDate() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -341,43 +362,11 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 				Calendar date = expense.getDate();
 				int year = date.get(Calendar.YEAR);
 				int month = date.get(Calendar.MONTH);
-				int day = date.get(Calendar.DAY_OF_MONTH);				
+				int day = date.get(Calendar.DAY_OF_MONTH);
 				return new DatePickerDialog(getActivity(), onDateSet, year, month, day);
 			}
 		};
 		fragment.show(getSupportFragmentManager(), "datePicker");
-	}
-
-	private void pickCurrency() {
-		DialogFragment fragment = new DialogFragment() {
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				CharSequence[] currenciesArray = new CharSequence[currencies.size()];
-				int selected = -1;
-				for (int i = 0; i < currencies.size(); i++) {
-					Currency currency = currencies.get(i);
-					currenciesArray[i] = currency.getSymbol();
-					if (currency.getId() == expense.getCurrency().getId())
-						selected = i;
-				}
-
-				AlertDialog.Builder builder = new AlertDialog.Builder(ExpenseEditorActivity.this);
-				builder.setTitle(R.string.expense_currency_prompt);
-				builder.setSingleChoiceItems(currenciesArray, selected, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Currency currency = currencies.get(which);
-						expense.setCurrency(currency);
-						currencyView.setText(currency.getSymbol());
-						currencyHelper = currency.getCurrencyHelper();
-						updateCustomSplit();
-						dismiss();
-					}
-				});
-				return builder.create();
-			}
-		};
-		fragment.show(getSupportFragmentManager(), "currencySelector");
 	}
 
 	private void pickPayer() {

@@ -20,22 +20,31 @@ import android.widget.TextView;
 
 public class CurrencySpinnerAdapter extends BaseAdapter {
 
-	private final List<Currency> allCurrencies;
+	private final List<Currency> currencies;
 	private final Context context;
+	private boolean symbolOnly = false;
 
 	public CurrencySpinnerAdapter(Context context) {
-		allCurrencies = getAllCurrencies();
+		this(context, getAllCurrencies());
+	}
+
+	public CurrencySpinnerAdapter(Context context, List<Currency> currencies) {
+		this.currencies = currencies;
 		this.context = context;
+	}
+
+	public void setSymbolOnly(boolean symbolOnly) {
+		this.symbolOnly = symbolOnly;
 	}
 
 	@Override
 	public int getCount() {
-		return allCurrencies.size();
+		return currencies.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return allCurrencies.get(position);
+		return currencies.get(position);
 	}
 
 	@Override
@@ -44,22 +53,22 @@ public class CurrencySpinnerAdapter extends BaseAdapter {
 	}
 
 	public int findItem(Currency currency) {
-		for (int i = 0; i < allCurrencies.size(); i++)
-			if (allCurrencies.get(i).equals(currency))
+		for (int i = 0; i < currencies.size(); i++)
+			if (currencies.get(i).equals(currency))
 				return i;
 		return -1;
 	}
 
 	public int findItem(String currencyCode) {
-		for (int i = 0; i < allCurrencies.size(); i++)
-			if (allCurrencies.get(i).getCurrencyCode().equals(currencyCode))
+		for (int i = 0; i < currencies.size(); i++)
+			if (currencies.get(i).getCurrencyCode().equals(currencyCode))
 				return i;
 		return -1;
 	}
 
 	public void hideItem(String currencyCode) {
 		Currency currency = Currency.getInstance(currencyCode);
-		allCurrencies.remove(currency);
+		currencies.remove(currency);
 	}
 
 	@Override
@@ -70,8 +79,8 @@ public class CurrencySpinnerAdapter extends BaseAdapter {
 			view = (TextView) inflater.inflate(android.R.layout.simple_spinner_item, parent, false);
 		}
 
-		Currency currency = allCurrencies.get(position);
-		view.setText(getDisplayName(currency));
+		Currency currency = currencies.get(position);
+		view.setText(symbolOnly ? currency.getSymbol() : getDisplayName(currency));
 		return view;
 	}
 
@@ -83,7 +92,7 @@ public class CurrencySpinnerAdapter extends BaseAdapter {
 			view = (TextView) inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
 		}
 
-		Currency currency = allCurrencies.get(position);
+		Currency currency = currencies.get(position);
 		view.setText(getDisplayName(currency));
 		return view;
 	}
