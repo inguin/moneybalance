@@ -7,7 +7,7 @@ Use Case
 --------
 
 You're travelling with friends, and as usual there are many bills to pay:
-Accomodation, restaurant bills, admittance fees, and so on. Instead of clumsily
+Accommodation, restaurant bills, admittance fees, and so on. Instead of clumsily
 splitting each bill as it comes in anybody from the group picks up the whole
 check. The payer, the amount, and optionally the split ratio are entered into
 the app. At the end of the vacation the app will tell excatly how much each
