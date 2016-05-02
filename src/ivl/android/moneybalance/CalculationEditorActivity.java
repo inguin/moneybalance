@@ -46,7 +46,7 @@ import android.widget.Toast;
 public class CalculationEditorActivity extends ActionBarActivity {
 
 	private static final int MIN_PERSONS = 2;
-	private static final int MAX_PERSONS = 10;
+	private static final int MAX_PERSONS = 100;
 
 	private EditText titleField;
 	private Spinner currencyField;
