@@ -230,7 +230,12 @@ public class CsvOutput {
 	}
 
 	private String cell(int row, int column) {
-		return String.format("%c%d", 'A' + column - 1, row);
+		String columns = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String result = "";
+		if (column > 26) result += columns.charAt((column - 1) / 26 - 1);
+		result += columns.charAt((column - 1) % 26);
+		result += Integer.toString(row);
+		return result;
 	}
 
 	// Column numbers (n = Number of persons):
