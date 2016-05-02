@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class AboutDialog extends Dialog {
 
 	private static String INFO_HTML =
-			"Copyright (C) 2012-2013 Ingo van Lil<br>" +
+			"Copyright (C) 2012-2016 Ingo van Lil<br>" +
 			"<a href=\"https://github.com/inguin/moneybalance\">https://github.com/inguin/moneybalance</a><br><br>" +
 			"Icons created by <a href=\"http://www.visualpharm.com\">VisualPharm</a>, " +
 			"used under a <a href=\"http://creativecommons.org/licenses/by-nd/3.0/\">CC BY-ND 3.0</a> license.";
