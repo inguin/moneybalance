@@ -15,8 +15,13 @@ person paid and consumed. Those who paid too little put the difference into a
 pot, those who paid too much take out theirs, and the score is settled.
 
 The collected data of a calculation can be written to a CSV file which can be
-imported into a spreadsheet application like Excel or LibreOffice Calc. The
-following import parameters should be used:
+imported into a spreadsheet application. It is recommended to use the Google
+spreadsheet app, which also allows for easy publication of the results. Using
+other applications, like Excel or LibreOffice Calc, may require manual
+tweaking of the embedded formulas, depending on the system language and
+application version.
+
+The following import parameters should be used:
 
 * Character set UTF-8
 * Language English (using a point as decimal mark in numbers)
