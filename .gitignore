@@ -2,3 +2,6 @@ bin
 gen
 .gradle
 build
+.idea
+local.properties
+moneybalance.iml
