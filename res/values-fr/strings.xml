@@ -35,7 +35,6 @@
     <string name="expense_payer">Payeur\u00A0:</string>
     <string name="expense_payer_prompt">Qui a payé\u00A0?</string>
     <string name="expense_amount">Montant\u00A0:</string>
-    <string name="expense_currency_prompt">Devise</string>
     <string name="expense_date">Date\u00A0:</string>
     <string name="custom_split">Fractionnement personnalisé</string>
 
