@@ -70,7 +70,7 @@ public class CalculationDataSource extends AbstractDataSource<Calculation> {
 		calculation.setPersons(persons);
 
 		ExpenseDataSource expenseDataSource = new ExpenseDataSource(dbHelper, calculation);
-		List<Expense> expenses = new ArrayList<Expense>();
+		List<Expense> expenses = new ArrayList<>();
 		calculation.setExpenses(expenses);
 
 		for (Person person : persons) {
@@ -140,7 +140,7 @@ public class CalculationDataSource extends AbstractDataSource<Calculation> {
 		currencyDataSource.insert(mainCurrency);
 
 		PersonDataSource personDataSource = new PersonDataSource(dbHelper, calculation);
-		List<Person> persons = new ArrayList<Person>();
+		List<Person> persons = new ArrayList<>();
 		for (String personName : personNames) {
 			Person person = new Person(calculation);
 			person.setName(personName);

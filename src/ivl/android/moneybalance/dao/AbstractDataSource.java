@@ -85,7 +85,7 @@ public abstract class AbstractDataSource<T extends DataObject> {
 	}
 
 	public List<T> getAllFromCursor(Cursor cursor) {
-		List<T> objects = new ArrayList<T>();
+		List<T> objects = new ArrayList<>();
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {

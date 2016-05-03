@@ -84,7 +84,7 @@ public class ExpenseDataSource extends AbstractDataSource<Expense> {
 
 		weightsCursor.moveToFirst();
 		if (!weightsCursor.isAfterLast()) {
-			weights = new HashMap<Long, Double>();
+			weights = new HashMap<>();
 			do {
 				weights.put(weightsCursor.getLong(0), weightsCursor.getDouble(1));
 			} while (weightsCursor.moveToNext());

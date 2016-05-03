@@ -24,9 +24,9 @@ public class Calculation extends DataObject {
 
 	private String title;
 	private String mainCurrencyCode;
-	private List<Currency> currencies = new ArrayList<Currency>();
-	private List<Person> persons = new ArrayList<Person>();
-	private List<Expense> expenses = new ArrayList<Expense>();
+	private List<Currency> currencies = new ArrayList<>();
+	private List<Person> persons = new ArrayList<>();
+	private List<Expense> expenses = new ArrayList<>();
 
 	private static final long MILLIS_PER_DAY = 24 * 3600 * 1000;
 

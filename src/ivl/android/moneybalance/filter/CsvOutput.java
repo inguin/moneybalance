@@ -25,8 +25,8 @@ public class CsvOutput {
 	private final CurrencyHelper helper;
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-	private final Set<Calendar> dates = new TreeSet<Calendar>();
-	private final Map<Calendar, List<Expense>> expensesByDate = new HashMap<Calendar, List<Expense>>();
+	private final Set<Calendar> dates = new TreeSet<>();
+	private final Map<Calendar, List<Expense>> expensesByDate = new HashMap<>();
 
 	private StringBuffer buffer;
 	private int row;
@@ -43,7 +43,7 @@ public class CsvOutput {
 			Calendar date = expense.getDate();
 			List<Expense> byDateList = expensesByDate.get(date);
 			if (byDateList == null) {
-				byDateList = new ArrayList<Expense>();
+				byDateList = new ArrayList<>();
 				expensesByDate.put(date, byDateList);
 				dates.add(date);
 			}

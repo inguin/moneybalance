@@ -97,7 +97,7 @@ public class Expense extends DataObject {
 	}
 
 	public List<Double> getShares(List<Person> persons) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		if (!isUnevenSplit()) {
 			double share = (double) getAmount() / persons.size();
 			for (int i = 0; i < persons.size(); i++)
@@ -118,7 +118,7 @@ public class Expense extends DataObject {
 		return result;
 	}
 	public List<Double> getExchangedShares(List<Person> persons) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		for (Double v : getShares(persons)) {
 			result.add(currency.exchangeAmount(v));
 		}

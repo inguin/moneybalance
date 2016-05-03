@@ -99,14 +99,14 @@ public class CurrencySpinnerAdapter extends BaseAdapter {
 
 	@TargetApi(19)
 	private static List<Currency> getAllCurrencies() {
-		List<Currency> currencies = new ArrayList<Currency>();
+		List<Currency> currencies = new ArrayList<>();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			for (Currency currency : Currency.getAvailableCurrencies())
 				currencies.add(currency);
 		} else {
 			// API <= 18 does not implement getAvailableLocales(), and Set<Currency> does
 			// not seem to work.
-			Set<String> codes = new TreeSet<String>();
+			Set<String> codes = new TreeSet<>();
 			for (Locale locale : Locale.getAvailableLocales()) {
 				try {
 					codes.add(Currency.getInstance(locale).getCurrencyCode());
@@ -122,7 +122,7 @@ public class CurrencySpinnerAdapter extends BaseAdapter {
 				return getDisplayName(lhs).compareTo(getDisplayName(rhs));
 			}
 		};
-		List<Currency> result = new ArrayList<Currency>(currencies);
+		List<Currency> result = new ArrayList<>(currencies);
 		Collections.sort(result, comparator);
 		return result;
 	}

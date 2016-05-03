@@ -145,7 +145,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			}
 		}
 
-		List<java.util.Currency> currencies = new ArrayList<java.util.Currency>();
+		List<java.util.Currency> currencies = new ArrayList<>();
 		for (Currency currency : calculation.getCurrencies())
 			currencies.add(java.util.Currency.getInstance(currency.getCurrencyCode()));
 		CurrencySpinnerAdapter adapter = new CurrencySpinnerAdapter(this, currencies);
@@ -172,10 +172,10 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 			amountView.setText(formatted);
 		}
 
-		Set<String> expenseTitles = new HashSet<String>();
+		Set<String> expenseTitles = new HashSet<>();
 		for (Expense expense : calculation.getExpenses())
 			expenseTitles.add(expense.getTitle());
-		ArrayAdapter<String> expenseTitlesAdapter = new ArrayAdapter<String>(this,
+		ArrayAdapter<String> expenseTitlesAdapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_dropdown_item_1line, expenseTitles.toArray(new String[0]));
 		titleView.setAdapter(expenseTitlesAdapter);
 		titleView.setThreshold(1);
@@ -261,8 +261,8 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 
 	private void updateCustomSplit() {
 		try {
-			for (int i = 0; i < customSplitEntries.length; i++)
-				customSplitEntries[i].result.setText("");
+			for (CustomSplitEntry customSplitEntry : customSplitEntries)
+				customSplitEntry.result.setText("");
 
 			double[] weights = new double[customSplitEntries.length];
 			double weightSum = 0;
@@ -427,8 +427,8 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		amountView.setError(null);
 		payerView.setError(null);
 		customSplitCheckBox.setError(null);
-		for (int i = 0; i < customSplitEntries.length; i++)
-			customSplitEntries[i].weight.setError(null);
+		for (CustomSplitEntry customSplitEntry : customSplitEntries)
+			customSplitEntry.weight.setError(null);
 
 		if (getExpenseTitle().length() == 0) {
 			titleView.setError(errRequired);
@@ -479,7 +479,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 
 		Map<Long, Double> weights = null;
 		if (customSplitCheckBox.isChecked()) {
-			weights = new HashMap<Long, Double>();
+			weights = new HashMap<>();
 			for (int i = 0; i < customSplitEntries.length; i++)
 				if (customSplitEntries[i].enabled.isChecked())
 					weights.put(persons.get(i).getId(), getWeight(i));

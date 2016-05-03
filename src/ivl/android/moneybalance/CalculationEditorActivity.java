@@ -57,7 +57,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		public EditText nameField;
 		public ImageView deleteButton;
 	};
-	private final List<PersonView> personViews = new ArrayList<PersonView>();
+	private final List<PersonView> personViews = new ArrayList<>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +200,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 	}
 
 	private ArrayList<String> getPersonNames() {
-		ArrayList<String> personNames = new ArrayList<String>();
+		ArrayList<String> personNames = new ArrayList<>();
 		for (int i = 0; i < personViews.size(); i++) {
 			String name = getPersonName(i);
 			if (name.length() > 0)
@@ -223,7 +223,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 			valid = false;
 		}
 
-		Set<String> personNames = new HashSet<String>();
+		Set<String> personNames = new HashSet<>();
 		for (int i = 0; i < personViews.size(); i++) {
 			String name = getPersonName(i);
 			if (name.length() > 0) {

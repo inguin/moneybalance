@@ -72,10 +72,10 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 
 		private Calculation calculation;
 
-		private final Map<Person, List<Expense>> expensesByPerson = new HashMap<Person, List<Expense>>();
+		private final Map<Person, List<Expense>> expensesByPerson = new HashMap<>();
 
-		private final Set<Calendar> dates = new TreeSet<Calendar>();
-		private final Map<Calendar, List<Expense>> expensesByDate = new HashMap<Calendar, List<Expense>>();
+		private final Set<Calendar> dates = new TreeSet<>();
+		private final Map<Calendar, List<Expense>> expensesByDate = new HashMap<>();
 
 		private final LayoutInflater inflater;
 		private final String groupSummaryFormat = getResources().getString(R.string.expenses_summary_format);
@@ -102,7 +102,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 				Calendar date = expense.getDate();
 				List<Expense> byDateList = expensesByDate.get(date);
 				if (byDateList == null) {
-					byDateList = new ArrayList<Expense>();
+					byDateList = new ArrayList<>();
 					expensesByDate.put(date, byDateList);
 					dates.add(date);
 				}

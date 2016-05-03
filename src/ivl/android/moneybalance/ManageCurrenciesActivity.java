@@ -46,7 +46,7 @@ public class ManageCurrenciesActivity extends ActionBarActivity {
 	}
 
 	private Spinner mainCurrencyField;
-	private final List<CurrencyEntry> additionalCurrencies = new ArrayList<CurrencyEntry>();
+	private final List<CurrencyEntry> additionalCurrencies = new ArrayList<>();
 	private AdditionalCurrencyAdapter additionalCurrencyAdapter;
 	private ListView additionalCurrencyList;
 
@@ -200,7 +200,7 @@ public class ManageCurrenciesActivity extends ActionBarActivity {
 		DialogFragment fragment = new DialogFragment() {
 			@Override
 			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				List<Currency> hiddenCurrencies = new ArrayList<Currency>();
+				List<Currency> hiddenCurrencies = new ArrayList<>();
 				for (Currency c : calculation.getCurrencies())
 					if (!c.equals(currency))
 						hiddenCurrencies.add(c);
