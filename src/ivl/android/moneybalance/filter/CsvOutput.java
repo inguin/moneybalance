@@ -73,7 +73,8 @@ public class CsvOutput {
 
 	private void appendTitleRow() {
 		row++;
-		buffer.append(quote(calculation.getTitle()) + "\n");
+		buffer.append(quote(calculation.getTitle()));
+		buffer.append("\n");
 	}
 
 	private void appendHeadings() {
@@ -222,11 +223,7 @@ public class CsvOutput {
 	}
 
 	private String quote(String text) {
-		StringBuilder buf = new StringBuilder();
-		buf.append('"');
-		buf.append(text.replace("\"", "\"\""));
-		buf.append('"');
-		return buf.toString();
+		return '"' + text.replace("\"", "\"\"") + '"';
 	}
 
 	private String cell(int row, int column) {

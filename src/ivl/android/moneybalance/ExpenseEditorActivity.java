@@ -24,9 +24,9 @@ import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 	public static final String PARAM_CALCULATION_ID = "calculationId";
 	public static final String PARAM_DATE = "date";
 
-	private enum  Mode { NEW_EXPENSE, EDIT_EXPENSE };
+	private enum  Mode { NEW_EXPENSE, EDIT_EXPENSE }
 	private Mode mode;
 	private Expense expense;
 
@@ -94,7 +94,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		CheckBox enabled;
 		EditText weight;
 		TextView result;
-	};
+	}
 	private CustomSplitEntry[] customSplitEntries;
 
 	private CheckBox customSplitCheckBox;
@@ -176,7 +176,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 		for (Expense expense : calculation.getExpenses())
 			expenseTitles.add(expense.getTitle());
 		ArrayAdapter<String> expenseTitlesAdapter = new ArrayAdapter<>(this,
-				android.R.layout.simple_dropdown_item_1line, expenseTitles.toArray(new String[0]));
+				android.R.layout.simple_dropdown_item_1line, expenseTitles.toArray(new String[expenseTitles.size()]));
 		titleView.setAdapter(expenseTitlesAdapter);
 		titleView.setThreshold(1);
 
@@ -228,7 +228,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 					enabled = false;
 			}
 
-			TableRow row = (TableRow) inflater.inflate(R.layout.split_row, null);
+			TableRow row = (TableRow) inflater.inflate(R.layout.split_row, customSplitTable, false);
 			customSplitTable.addView(row);
 
 			final CustomSplitEntry customSplitEntry = new CustomSplitEntry();
@@ -281,10 +281,10 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 					customSplitEntries[i].result.setText(formatted);
 				}
 			}
-		} catch (Exception e) {}
+		} catch (Exception ignored) {}
 	}
 
-	private TextWatcher updateCustomSplitTextWatcher = new TextWatcher() {
+	private final TextWatcher updateCustomSplitTextWatcher = new TextWatcher() {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
@@ -307,7 +307,7 @@ public class ExpenseEditorActivity extends ActionBarActivity {
 	}
 
 	private void updateDate() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat format = DateFormat.getDateInstance();
 		dateView.setText(format.format(expense.getDate().getTime()));
 	}
 

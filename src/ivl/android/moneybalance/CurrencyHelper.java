@@ -25,7 +25,6 @@ public class CurrencyHelper {
 
 	private final NumberFormat currencyFormat;
 	private final NumberFormat plainFormat;
-	private long divider;
 
 	public CurrencyHelper(Currency currency, Locale locale) {
 		currencyFormat = NumberFormat.getCurrencyInstance(locale);
@@ -37,8 +36,6 @@ public class CurrencyHelper {
 
 		plainFormat.setMinimumFractionDigits(currency.getDefaultFractionDigits());
 		plainFormat.setMaximumFractionDigits(currency.getDefaultFractionDigits());
-
-		divider = Math.round(Math.pow(10, currency.getDefaultFractionDigits()));
 	}
 
 	public CurrencyHelper(Currency currency) {
@@ -48,10 +45,6 @@ public class CurrencyHelper {
 	public void setGroupingUsed(boolean value) {
 		currencyFormat.setGroupingUsed(value);
 		plainFormat.setGroupingUsed(value);
-	}
-
-	public double convertCents(long value) {
-		return (double)value / divider;
 	}
 
 	public String format(double value, boolean withSymbol) {

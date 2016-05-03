@@ -26,10 +26,10 @@ public class Expense extends DataObject {
 	private final Calculation calculation;
 
 	private Person person;
-	private String title = new String();
+	private String title = "";
 	private double amount;
 	private Currency currency;
-	private Calendar date = Calendar.getInstance();
+	private final Calendar date = Calendar.getInstance();
 	private Map<Long, Double> splitWeights = null;
 
 	public Expense(Calculation calculation) {
@@ -99,7 +99,7 @@ public class Expense extends DataObject {
 	public List<Double> getShares(List<Person> persons) {
 		List<Double> result = new ArrayList<>();
 		if (!isUnevenSplit()) {
-			double share = (double) getAmount() / persons.size();
+			double share = getAmount() / persons.size();
 			for (int i = 0; i < persons.size(); i++)
 				result.add(share);
 		} else {

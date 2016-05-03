@@ -32,17 +32,17 @@ public abstract class AbstractDataSource<T extends DataObject> {
 	private final String table;
 	private final String[] columns;
 
-	public AbstractDataSource(DataBaseHelper dbHelper, String table, String[] columns) {
+	AbstractDataSource(DataBaseHelper dbHelper, String table, String[] columns) {
 		this.dbHelper = dbHelper; 
 		this.table = table;
 		this.columns = columns;
 	}
 
-	protected SQLiteDatabase getDatabase() {
+	SQLiteDatabase getDatabase() {
 		return dbHelper.getWritableDatabase();
 	}
 
-	public long insert(T object) {
+	long insert(T object) {
 		long insertId = getDatabase().insert(
 				table,
 				null,
@@ -51,7 +51,7 @@ public abstract class AbstractDataSource<T extends DataObject> {
 		return insertId;
 	}
 
-	public void update(T object) {
+	void update(T object) {
 		long id = object.getId();
 		getDatabase().update(
 				table,
@@ -59,7 +59,7 @@ public abstract class AbstractDataSource<T extends DataObject> {
 				DataBaseHelper.COLUMN_ID + " = ?", new String[] { Long.toString(id) });
 	}
 
-	public void delete(long id) {
+	void delete(long id) {
 		getDatabase().delete(
 				table,
 				DataBaseHelper.COLUMN_ID + " = ?", new String[] { Long.toString(id) });		
@@ -84,7 +84,7 @@ public abstract class AbstractDataSource<T extends DataObject> {
 				null, null, null, null, null);
 	}
 
-	public List<T> getAllFromCursor(Cursor cursor) {
+	List<T> getAllFromCursor(Cursor cursor) {
 		List<T> objects = new ArrayList<>();
 
 		cursor.moveToFirst();

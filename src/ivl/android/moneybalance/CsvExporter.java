@@ -14,7 +14,7 @@ import android.widget.Toast;
 import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.filter.CsvOutput;
 
-public class CsvExporter {
+class CsvExporter {
 
 	static private final int MAX_FILENUM = 1000;
 

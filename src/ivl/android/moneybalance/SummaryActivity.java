@@ -22,7 +22,7 @@ import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.List;
 
 import android.app.Activity;
@@ -83,7 +83,7 @@ public class SummaryActivity extends Activity {
 		for (int i = 0; i < persons.size(); i++) {
 			Person person = persons.get(i);
 
-			TableRow row = (TableRow) inflater.inflate(R.layout.summary_row, null);
+			TableRow row = (TableRow) inflater.inflate(R.layout.summary_row, table);
 			table.addView(row);
 			TextView nameView = (TextView) row.findViewById(R.id.name);
 			TextView sumExpenses = (TextView) row.findViewById(R.id.sum_expenses);
@@ -108,7 +108,7 @@ public class SummaryActivity extends Activity {
 		TextView numExpensesView = (TextView) findViewById(R.id.num_expenses);
 		TextView totalAmountView = (TextView) findViewById(R.id.total_amount);
 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat format = DateFormat.getDateInstance();
 		firstDateView.setText(format.format(calculation.getFirstDate().getTime()));
 		lastDateView.setText(format.format(calculation.getLastDate().getTime()));
 

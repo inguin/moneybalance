@@ -56,7 +56,7 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		public View view;
 		public EditText nameField;
 		public ImageView deleteButton;
-	};
+	}
 	private final List<PersonView> personViews = new ArrayList<>();
 
 	@Override
@@ -77,9 +77,12 @@ public class CalculationEditorActivity extends ActionBarActivity {
 		currencyField.setSelection(selected);
 
 		if (savedInstanceState != null) {
-			for (String personName : savedInstanceState.getStringArrayList("personNames")) {
-				PersonView view = addPersonRow();
-				view.nameField.setText(personName);
+			List<String> personNames = savedInstanceState.getStringArrayList("personNames");
+			if (personNames != null) {
+				for (String personName : personNames) {
+					PersonView view = addPersonRow();
+					view.nameField.setText(personName);
+				}
 			}
 		}
 		createOrDeletePersonRows();

@@ -24,7 +24,7 @@ import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -187,7 +187,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 				expenses = expensesByPerson.get(person);
 			} else {
 				Calendar date = (Calendar) getGroup(groupPosition);
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat format = DateFormat.getDateInstance();
 				holder.nameView.setText(format.format(date.getTime()));
 				expenses = expensesByDate.get(date);
 			}
@@ -297,7 +297,7 @@ public class ExpenseListActivity extends ActionBarActivity implements OnChildCli
 			}
 
 			if (groupByPerson) {
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat format = DateFormat.getDateInstance();
 				holder.details1View.setText(format.format(expense.getDate().getTime()));
 			} else {
 				Person person = expense.getPerson();

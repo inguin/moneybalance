@@ -131,6 +131,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 			cursor.moveToNext();
 		}
+		cursor.close();
 	}
 
 	@Override

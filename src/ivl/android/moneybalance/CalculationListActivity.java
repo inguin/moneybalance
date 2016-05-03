@@ -22,7 +22,7 @@ import ivl.android.moneybalance.data.Calculation;
 import ivl.android.moneybalance.data.Expense;
 import ivl.android.moneybalance.data.Person;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -99,7 +99,7 @@ public class CalculationListActivity extends ActionBarActivity implements OnItem
 				datesView.setVisibility(View.GONE);
 				summaryView.setText(R.string.no_expenses);
 			} else {
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat format = DateFormat.getDateInstance();
 				String firstDate = format.format(calculation.getFirstDate().getTime());
 				String lastDate = format.format(calculation.getLastDate().getTime());
 				datesView.setText(String.format(dateRangeFormat, firstDate, lastDate));
@@ -111,7 +111,7 @@ public class CalculationListActivity extends ActionBarActivity implements OnItem
 				summaryView.setText(String.format(summaryFormat, count, total));
 			}
 		}
-	};
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

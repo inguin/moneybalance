@@ -18,7 +18,7 @@ package ivl.android.moneybalance.data;
 
 public class DataObject {
 
-	long id;
+	private long id;
 
 	public long getId() {
 		return id;

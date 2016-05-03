@@ -140,12 +140,10 @@ public class CalculationDataSource extends AbstractDataSource<Calculation> {
 		currencyDataSource.insert(mainCurrency);
 
 		PersonDataSource personDataSource = new PersonDataSource(dbHelper, calculation);
-		List<Person> persons = new ArrayList<>();
 		for (String personName : personNames) {
 			Person person = new Person(calculation);
 			person.setName(personName);
 			personDataSource.insert(person);
-			persons.add(person);
 		}
 
 		return get(calculation.getId());

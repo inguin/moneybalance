@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class CurrencySpinnerAdapter extends BaseAdapter {
+class CurrencySpinnerAdapter extends BaseAdapter {
 
 	private final List<Currency> currencies;
 	private final Context context;
@@ -110,7 +110,7 @@ public class CurrencySpinnerAdapter extends BaseAdapter {
 			for (Locale locale : Locale.getAvailableLocales()) {
 				try {
 					codes.add(Currency.getInstance(locale).getCurrencyCode());
-				} catch (Exception e) {}
+				} catch (Exception ignored) {}
 			}
 			for (String code : codes)
 				currencies.add(Currency.getInstance(code));

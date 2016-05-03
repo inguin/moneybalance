@@ -19,7 +19,7 @@ package ivl.android.moneybalance.data;
 public class Person extends DataObject {
 
 	private final Calculation calculation;
-	private String name = new String();
+	private String name = "";
 
 	public Person(Calculation calculation) {
 		this.calculation = calculation;

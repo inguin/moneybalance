@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -16,19 +17,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class CurrencyEditor {
+class CurrencyEditor {
 
 	private final Context context;
 	private final View view;
 	private final CurrencySpinnerAdapter spinnerAdapter;
 	private final Spinner currencyField;
 	private final TextView thisCurrencyLabel;
-	private final TextView mainCurrencyLabel;
 	private final EditText thisCurrencyRate;
 	private final EditText mainCurrencyRate;
 
-	private Currency mainCurrency;
+	private final Currency mainCurrency;
 
+	@SuppressLint("InflateParams")
 	public CurrencyEditor(Context context, Currency mainCurrency, List<Currency> hiddenCurrencies) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		view = inflater.inflate(R.layout.currency_editor, null, false);
@@ -51,7 +52,7 @@ public class CurrencyEditor {
 		});
 
 		thisCurrencyLabel = (TextView) view.findViewById(R.id.currency_symbol_this);
-		mainCurrencyLabel = (TextView) view.findViewById(R.id.currency_symbol_main);
+		TextView mainCurrencyLabel = (TextView) view.findViewById(R.id.currency_symbol_main);
 		mainCurrencyLabel.setText(mainCurrency.getSymbol());
 
 		thisCurrencyRate = (EditText) view.findViewById(R.id.exchange_rate_this);
@@ -83,14 +84,14 @@ public class CurrencyEditor {
 		try {
 			double rate = getExchangeRateThis();
 			thisValid = (rate > EPSILON);
-		} catch (Exception e) {}
+		} catch (Exception ignored) {}
 		thisCurrencyRate.setError(thisValid ? null : errNumber);
 
 		boolean mainValid = false;
 		try {
 			double rate = getExchangeRateMain();
 			mainValid = (rate > EPSILON);
-		} catch (Exception e) {}
+		} catch (Exception ignored) {}
 		mainCurrencyRate.setError(mainValid ? null : errNumber);
 
 		return thisValid && mainValid;
