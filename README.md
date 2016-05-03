@@ -33,6 +33,7 @@ Features
 
 * Managing multiple calculations in parallel
 * Uneven split of expenses
+* Multiple currencies per calculation
 * CSV export for importing calculations into a spreadsheet application
 * English, german, french and spanish localization
 
@@ -43,16 +44,6 @@ Binary builds are maintained by the F-Droid project and can be downloaded
 from:
 
 https://f-droid.org/repository/browse/?fdid=ivl.android.moneybalance
-
-Dependencies
-------------
-
-The project requires the v7 appcompat library from the Android Support
-Libraries. It is included in the Android Support Library, revision 18,
-at extras/android/support/v7/appcompat. You may have to adjust the library
-reference in the project.properties file to build this project. Follow the
-instructions at http://developer.android.com/tools/support-library/setup.html
-(section "Adding libraries with resources") for details.
 
 Warning
 -------
