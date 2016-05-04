@@ -14,7 +14,7 @@
 
     <string name="new_calculation">Nouveau calcul</string>
     <string name="calculation_title">Titre\u00A0:</string>
-    <string name="calculation_currency">Devise\u00A0:</string>
+    <string name="calculation_currency">Devise principale\u00A0:</string>
     <string name="calculation_persons">Personnes\u00A0:</string>
 
     <string name="no_expenses">Aucune dépense</string>
@@ -22,11 +22,14 @@
     
     <string name="expenses_summary_format">%1$d dépense(s) pour un total de %2$s</string>
     <string name="plus">Nouvelle dépense</string>
+    <string name="manage_currencies">Gérer les devises</string>
     <string name="calculation_summary">Résumé</string>
     <string name="export_calculation">Exporter</string>
     <string name="group_by_person">Grouper par personne</string>
     <string name="group_by_date">Grouper par date</string>
 
+    <string name="additional_currencies">Devise complémentaire:</string>
+    <string name="add_currency">Ajouter une devise</string>
     <string name="equals">=</string>
 
     <string name="new_expense">Nouvelle dépense</string>
