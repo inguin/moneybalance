@@ -10,7 +10,7 @@
   
   <string name="new_calculation">Nuevo Cálculo</string>
   <string name="calculation_title">Título:</string>
-  <string name="calculation_currency">Moneda:</string>
+  <string name="calculation_currency">Principal moneda:</string>
   <string name="calculation_persons">Personas:</string>
   
   <string name="no_expenses">Sin gastos</string>
@@ -18,11 +18,14 @@
   
   <string name="expenses_summary_format">%1$d gastos, %2$s en total</string>
   <string name="plus">Nuevo Gasto</string>
+  <string name="manage_currencies">Manejar monedades</string>
   <string name="calculation_summary">Resumen</string>
   <string name="export_calculation">Exportar</string>
   <string name="group_by_person">Agrupar por personas</string>
   <string name="group_by_date">Agrupar por Fechas</string>
 
+  <string name="additional_currencies">Monenades adicionales:</string>
+  <string name="add_currency">Añadir moneda</string>
   <string name="equals">=</string>
 
   <string name="new_expense">Nuevo Gasto</string>
