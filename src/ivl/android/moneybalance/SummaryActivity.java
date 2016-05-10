@@ -83,7 +83,7 @@ public class SummaryActivity extends Activity {
 		for (int i = 0; i < persons.size(); i++) {
 			Person person = persons.get(i);
 
-			TableRow row = (TableRow) inflater.inflate(R.layout.summary_row, table);
+			TableRow row = (TableRow) inflater.inflate(R.layout.summary_row, table, false);
 			table.addView(row);
 			TextView nameView = (TextView) row.findViewById(R.id.name);
 			TextView sumExpenses = (TextView) row.findViewById(R.id.sum_expenses);
