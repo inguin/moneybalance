@@ -67,5 +67,6 @@
     <string name="about_copyright_icons">Icônes créées par <a href="http://www.visualpharm.com">VisualPharm</a>, utilisées sous licence <a href="https://creativecommons.org/licenses/by-nd/3.0/fr/">Creative Commons CC BY-ND 3.0</a>.</string>
     <string name="about_copyright_sources"><a href="https://github.com/inguin/moneybalance">https://github.com/inguin/moneybalance</a></string>
     <string name="about_apache_licence_copy">Vous pouvez obtenir une copie de la licence sur <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>.</string>
+    <string name="about_version_number">%1$s version n° %2$s (build %3$d)</string>
 
 </resources>

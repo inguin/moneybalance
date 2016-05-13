@@ -64,5 +64,6 @@
     <string name="about_apache_licence_text">Licensed under the Apache License, Version 2.0 (the \"License\"). You may not use this program except in compliance with the License.</string>
     <string name="about_apache_licence_copy">You may obtain a copy of the License at <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>.</string>
     <string name="about_copyright_sources"><a href="https://github.com/inguin/moneybalance">https://github.com/inguin/moneybalance</a></string>
+    <string name="about_version_number">%1$s version #%2$s (build %3$d)</string>
 
 </resources>

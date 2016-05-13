@@ -23,6 +23,14 @@
         android:text="@string/about_copyright" />
 
     <TextView
+        android:id="@+id/about_version_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:text="@string/about_version_number"/>
+
+    <TextView
         android:id="@+id/about_source"
         android:text="@string/about_copyright_sources"
         android:autoLink="web"
