@@ -62,5 +62,10 @@
     <string name="export_error_mkdir">Impossible de créer le dossier %s.</string>
     <string name="export_error_no_free_file">Impossible de trouver un nom de fichier inutilisé.</string>
     <string name="export_error_write_failed">Erreur lors de l\'écriture vers %s\u00A0:</string>
-    
+    <string name="about_apache_licence_text">Disponible sous licence Apache, Version 2.0 (La \"Licence\"). Vous ne pouvez utiliser ce programme que conformément à La Licence.</string>
+    <string name="about_copyright">Copyright (C) 2012-2016 Ingo van Lil</string>
+    <string name="about_copyright_icons">Icônes créées par <a href="http://www.visualpharm.com">VisualPharm</a>, utilisées sous licence <a href="https://creativecommons.org/licenses/by-nd/3.0/fr/">Creative Commons CC BY-ND 3.0</a>.</string>
+    <string name="about_copyright_sources"><a href="https://github.com/inguin/moneybalance">https://github.com/inguin/moneybalance</a></string>
+    <string name="about_apache_licence_copy">Vous pouvez obtenir une copie de la licence sur <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>.</string>
+
 </resources>

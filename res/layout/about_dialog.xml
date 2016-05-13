@@ -1,22 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/about_appicon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:src="@drawable/coins" />
 
     <TextView
         android:id="@+id/about_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:drawableLeft="@drawable/coins" />
+        android:layout_margin="8dp"
+        android:text="@string/about_copyright" />
+
+    <TextView
+        android:id="@+id/about_source"
+        android:text="@string/about_copyright_sources"
+        android:autoLink="web"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/about_icons"
+        android:text="@string/about_copyright_icons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/about_license"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/about_apache_licence_text"
         android:layout_marginTop="16dp"
+        android:textColor="#444444"
+        android:textSize="12sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/about_licence_copy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_apache_licence_copy"
+        android:layout_marginTop="8dp"
         android:textColor="#444444"
         android:textSize="12sp"
         android:textStyle="italic" />

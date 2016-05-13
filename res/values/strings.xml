@@ -58,5 +58,11 @@
     <string name="export_error_mkdir">Failed to create directory %s.</string>
     <string name="export_error_no_free_file">Failed to find an unused file name.</string>
     <string name="export_error_write_failed">Error writing to %s:</string>
+    
+    <string name="about_copyright">Copyright (C) 2012-2016 Ingo van Lil</string>
+    <string name="about_copyright_icons">Icons created by <a href="http://www.visualpharm.com">VisualPharm</a>,used under a <a href="http://creativecommons.org/licenses/by-nd/3.0/">Creative Commons CC BY-ND 3.0</a> license.</string>
+    <string name="about_apache_licence_text">Licensed under the Apache License, Version 2.0 (the \"License\"). You may not use this program except in compliance with the License.</string>
+    <string name="about_apache_licence_copy">You may obtain a copy of the License at <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>.</string>
+    <string name="about_copyright_sources"><a href="https://github.com/inguin/moneybalance">https://github.com/inguin/moneybalance</a></string>
 
 </resources>
