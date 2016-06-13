@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoneyBalance</string>
+    <string name="about_apache_licence_copy">Je kunt een kopie van de licentie vinden op <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>.</string>
+    <string name="about_copyright_icons">Pictogrammen gecreëerd door <a href="http://www.visualpharm.com">VisualPharm</a>, gebruikt met de <a href="http://creativecommons.org/licenses/by-nd/3.0/">Creative Commons CC BY-ND 3.0</a> licentie.</string>
+    <string name="about_apache_licence_text">Dit programma wordt verspreid onder de Apache licentie, versie 2.0. Je kunt dit programma alleen in overeenstemming met deze licentie gebruiken.</string>
+    <string name="about_copyright">Copyright (C) 2012-2016 Ingo van Lil</string>
+    <string name="about_copyright_sources"><a href="https://github.com/inguin/moneybalance">https://github.com/inguin/moneybalance</a></string>
+    <string name="about_version_number">%1$s version %2$s (build %3$d)</string>
+    <string name="add_currency">Valuta toevoegen</string>
+    <string name="additional_currencies">Andere valuta:</string>
+    <string name="calculation_currency">Hoofdvaluta:</string>
+    <string name="calculation_persons">Personen:</string>
+    <string name="calculation_summary">Overzicht</string>
+    <string name="calculation_title">Titel:</string>
+    <string name="confirm_delete_calculation">Weet je zeker dat je deze balans wilt verwijderen?</string>
+    <string name="custom_split">Aangepaste verdeling</string>
+    <string name="date_range_format">%1$s tot %2$s</string>
+    <string name="day_format">%d dag</string>
+    <string name="days_format">%d dagen</string>
+    <string name="duration">Duur:</string>
+    <string name="edit_expense">Uitgave aanpassen</string>
+    <string name="equals">=</string>
+    <string name="expense_amount">Bedrag:</string>
+    <string name="expense_date">Datum:</string>
+    <string name="expense_payer">Betaler:</string>
+    <string name="expense_payer_prompt">Wie heeft betaald?</string>
+    <string name="expense_title">Titel:</string>
+    <string name="expenses_consumption">Uitgaven/Consumptie</string>
+    <string name="expenses_summary_format">%1$d uitgave(n), %2$s totaal</string>
+    <string name="export_calculation">Exporteren</string>
+    <string name="export_error_mkdir">Creëren van map mislukt %s.</string>
+    <string name="export_error_no_free_file">Geen ongebruikte bestandsnaam gevonden.</string>
+    <string name="export_error_no_permission">Geen toestemming om naar externe opslag te schrijven.</string>
+    <string name="export_error_write_failed">Fout bij schrijven naar %s.</string>
+    <string name="export_success">Succesvol geëxporteerd naar %s.</string>
+    <string name="first_date">Begin:</string>
+    <string name="group_by_date">Op datum groeperen</string>
+    <string name="group_by_person">Op persoon groeperen</string>
+    <string name="last_date">Einde:</string>
+    <string name="manage_currencies">Valuta beheren</string>
+    <string name="menu_about">Over MoneyBalance</string>
+    <string name="menu_delete">Verwijderen</string>
+    <string name="menu_save">Opslaan</string>
+    <string name="minus">minus</string>
+    <string name="new_calculation">Nieuwe balans</string>
+    <string name="new_expense">Nieuwe uitgave</string>
+    <string name="no_expenses">Geen uitgaven</string>
+    <string name="num_expenses">Uitgaven:</string>
+    <string name="plus">Nieuwe uitgave</string>
+    <string name="summary">Overzicht</string>
+    <string name="total_amount">Totaalbedrag:</string>
+    <string name="validate_duplicate_name">Deze naam bestaat al.</string>
+    <string name="validate_min_names">Voer minstens %d namen in.</string>
+    <string name="validate_number">Voer een positief nummer in.</string>
+    <string name="validate_required">Dit veld is verplicht.</string>
+    <string name="validate_select_split_persons">Selecteer ten minste een van de onderstaande personen.</string>
+</resources>
