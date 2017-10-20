@@ -1,3 +1,6 @@
+Version 1.5 - ???
+	* Improve compatibility of CSV output
+
 Version 1.4 - 13 Jun 2016
 	* New about dialog (translatable, shows version number and build date)
 	* Dutch localization

@@ -120,7 +120,7 @@ public class CsvOutput {
 				buffer.append(',');
 				buffer.append(quote(mainCurrency.getCurrencyCode()));
 				buffer.append(',');
-				buffer.append(String.format("\"=%s*%s\"", cell(row, localAmountColumn()), cell(row, exchangeRateColumn())));
+				buffer.append(String.format("=%s*%s", cell(row, localAmountColumn()), cell(row, exchangeRateColumn())));
 			}
 		} else {
 			buffer.append(quote(currency.getCurrencyCode()));
@@ -172,7 +172,7 @@ public class CsvOutput {
 			String nameCell = cell(2, column);
 			String firstAmountCell = cell(3, exchangedAmountColumn());
 			String lastAmountCell = cell(3 + calculation.getExpenses().size() - 1 , exchangedAmountColumn());
-			String formula = String.format("\"=SUMIF(%s:%s, %s, %s:%s)\"", firstNameCell, lastNameCell, nameCell, firstAmountCell, lastAmountCell);
+			String formula = String.format("=SUMIF(%s:%s; %s; %s:%s)", firstNameCell, lastNameCell, nameCell, firstAmountCell, lastAmountCell);
 			buffer.append(',');
 			buffer.append(formula);
 		}
@@ -214,7 +214,7 @@ public class CsvOutput {
 			int column = firstShareColumn() + i;
 			String expenseCell = cell(row - 2, column);
 			String consumptionCell = cell(row - 1, column);
-			String formula = String.format("\"=%s-%s\"", expenseCell, consumptionCell);
+			String formula = String.format("=%s-%s", expenseCell, consumptionCell);
 			buffer.append(',');
 			buffer.append(formula);
 		}
